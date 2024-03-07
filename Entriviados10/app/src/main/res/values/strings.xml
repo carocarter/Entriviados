@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Entriviados1.0</string>
+    <string-array name="screens">
+        <item>Perfil</item>
+        <item>Mensajes</item>
+        <item>Ajustes</item>
+        <item>Web</item>
+        <item>Cerrar sesión</item>
+    </string-array>
+</resources>
