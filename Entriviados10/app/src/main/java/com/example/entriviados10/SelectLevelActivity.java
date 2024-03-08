@@ -7,7 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,10 +19,21 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+
+import com.google.gson.Gson;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class SelectLevelActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     Toolbar toolbar2;
-    Button playButton, perfilButton;
+    Button buttonEasy, buttonMedium, buttonHard, perfilButton;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle drawerToggle;
 
@@ -45,17 +57,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
 
         // getSupportActionBar().setTitle("Main Menu");
 
-
-        playButton = findViewById(R.id.playbutton);
         perfilButton = findViewById(R.id.perfilbutton);
-
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SelectLevelActivity.this, GameActivity.class);
-                startActivity(intent);
-            }
-        });
 
         perfilButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +67,30 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
             }
         });
 
+        buttonEasy = findViewById(R.id.buttoneasy);
+        buttonMedium = findViewById(R.id.buttonmedium);
+        buttonHard = findViewById(R.id.buttonhard);
 
+        buttonEasy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendGetRequest("easy");
+            }
+        });
+
+        buttonMedium.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendGetRequest("medium");
+            }
+        });
+
+        buttonHard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendGetRequest("hard");
+            }
+        });
     }
 
     @Override
@@ -93,5 +118,51 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
                        break;
     }
     transaction.commit();
+    }
+
+    private void sendGetRequest(String difficulty) {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("https://the-trivia-api.com/v2/questions?difficulties=" + difficulty)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    final String jsonResponse = response.body().string();
+
+                    Gson gson = new Gson();
+                    Question[] questions = gson.fromJson(jsonResponse, Question[].class);
+
+
+                    //Start GameActivity and add data to extras
+                    Intent intent = new Intent(SelectLevelActivity.this, GameActivity.class);
+                    intent.putExtra("questions", questions);
+                    intent.putExtra("questionIndex", 0);
+                    startActivity(intent);
+                } else {
+                    //----! Error message
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(SelectLevelActivity.this, "Error: Network failure", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //----! Error message
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(SelectLevelActivity.this, "Error: Network failure", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 }
