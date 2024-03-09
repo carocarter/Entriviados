@@ -123,6 +123,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
     private void sendGetRequest(String difficulty) {
         OkHttpClient client = new OkHttpClient();
 
+        //Changes in the number of questions per round should be added to the parameters
         Request request = new Request.Builder()
                 .url("https://the-trivia-api.com/v2/questions?difficulties=" + difficulty)
                 .build();
@@ -136,8 +137,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
                     Gson gson = new Gson();
                     Question[] questions = gson.fromJson(jsonResponse, Question[].class);
 
-
-                    //Start GameActivity and add data to extras
+                    //Start GameActivity and add questions and the index of the question to be incremented
                     Intent intent = new Intent(SelectLevelActivity.this, GameActivity.class);
                     intent.putExtra("questions", questions);
                     intent.putExtra("questionIndex", 0);
