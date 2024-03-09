@@ -1,6 +1,7 @@
 package com.example.entriviados10;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +23,14 @@ import java.util.List;
 public class GameActivity extends AppCompatActivity {
     private Question[] questions;
     private int questionIndex;
+    private int correctButtonIndex;
+    private Button[] buttons;
+    private Button correctButton;
+    private ConstraintLayout constraintLayout;
     private ProgressBar progressBar;
     private CountDownTimer timer;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,6 +38,7 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         progressBar = findViewById(R.id.progressBar);
+        constraintLayout = findViewById(R.id.constraintlayout);
 
         //Retrieve values from the intent
         Intent intent = getIntent();
@@ -57,42 +67,23 @@ public class GameActivity extends AppCompatActivity {
             button2.setText(answerOptions.get(1));
             button3.setText(answerOptions.get(2));
             button4.setText(answerOptions.get(3));
+            buttons = new Button[]{button1, button2, button3, button4};
 
             //Store the correct question index
-            final int correctButtonIndex = answerOptions.indexOf(questions[questionIndex].getCorrectAnswer());
+            correctButtonIndex = answerOptions.indexOf(questions[questionIndex].getCorrectAnswer());
+            correctButton = buttons[correctButtonIndex];
 
-            button1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleButtonClick(0, correctButtonIndex);
-                }
-            });
-
-            button2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleButtonClick(1, correctButtonIndex);
-                }
-            });
-
-            button3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleButtonClick(2, correctButtonIndex);
-                }
-            });
-
-            button4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleButtonClick(3, correctButtonIndex);
-                }
-            });
-
+            for (int i = 0; i < buttons.length; i++) {
+                buttons[i].setTag(i);
+                buttons[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int clickedButtonIndex = (int) v.getTag();
+                        handleButtonClick(clickedButtonIndex);
+                    }
+                });
+            }
             startTimer();
-        } else {
-            //----! Error message + go back?
-            Toast.makeText(GameActivity.this, "Error: Couldn't load the question", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -106,29 +97,27 @@ public class GameActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
-                startNextActivity();
+                correctButton.setBackgroundTintList(ContextCompat.getColorStateList(GameActivity.this, R.color.green));
+                constraintLayout.setBackgroundColor(Color.parseColor("#A1FDB1AF"));
+                TimeBetweenQuestions();
             }
         }.start();
     }
 
-
-
-    private void handleButtonClick(int clickedButtonIndex, int correctButtonIndex) {
+    private void handleButtonClick(int clickedButtonIndex) {
         timer.cancel();
-        Button clicked = getClickedButton(clickedButtonIndex);
-        Button correctButton = getCorrectButton(correctButtonIndex);
-        Button[] incorrectButton = getIncorrectButton(correctButtonIndex);
+        Button clicked = buttons[clickedButtonIndex];
 
-        if (clicked == correctButton) {
-            clicked.setBackgroundTintList(getResources().getColorStateList(R.color.green));
-            TimeBetweenQuestions();
+        // Color the clicked button
+        if (clickedButtonIndex == correctButtonIndex) {
+            clicked.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.green));
+            constraintLayout.setBackgroundColor(Color.parseColor("#A1BCFEC2"));
         } else {
-            correctButton.setBackgroundTintList(getResources().getColorStateList(R.color.green));
-            incorrectButton[0].setBackgroundTintList(getResources().getColorStateList(R.color.red));
-            incorrectButton[1].setBackgroundTintList(getResources().getColorStateList(R.color.red));
-            incorrectButton[2].setBackgroundTintList(getResources().getColorStateList(R.color.red));
-            TimeBetweenQuestions();
+            clicked.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red));
+            correctButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.green));
+            constraintLayout.setBackgroundColor(Color.parseColor("#A1FDB1AF"));
         }
+        TimeBetweenQuestions();
     }
 
     private void startNextActivity() {
@@ -153,71 +142,6 @@ public class GameActivity extends AppCompatActivity {
         if (timer != null) {
             timer.cancel();
         }
-    }
-
-    private Button getClickedButton(int clickedButtonIndex){
-        Button clicked = null;
-        switch (clickedButtonIndex){
-            case 0:
-                clicked = findViewById(R.id.button1);
-                break;
-            case 1:
-                clicked = findViewById(R.id.button2);
-                break;
-            case 2:
-                clicked = findViewById(R.id.button3);
-                break;
-            case 3:
-                clicked = findViewById(R.id.button4);
-                break;
-        }
-        return clicked;
-    }
-
-    private Button getCorrectButton(int correctButtonIndex){
-        Button correctButton = null;
-        switch (correctButtonIndex){
-            case 0:
-                correctButton = findViewById(R.id.button1);
-                break;
-            case 1:
-                correctButton = findViewById(R.id.button2);
-                break;
-            case 2:
-                correctButton = findViewById(R.id.button3);
-                break;
-            case 3:
-                correctButton = findViewById(R.id.button4);
-                break;
-        }
-        return correctButton;
-    }
-
-    private Button[] getIncorrectButton(int correctButtonIndex){
-        Button[] incorrectButton = new Button[3];
-        switch (correctButtonIndex){
-            case 0:
-                incorrectButton[0] = findViewById(R.id.button2);
-                incorrectButton[1] = findViewById(R.id.button3);
-                incorrectButton[2] = findViewById(R.id.button4);
-                break;
-            case 1:
-                incorrectButton[0] = findViewById(R.id.button1);
-                incorrectButton[1] = findViewById(R.id.button3);
-                incorrectButton[2] = findViewById(R.id.button4);
-                break;
-            case 2:
-                incorrectButton[0] = findViewById(R.id.button1);
-                incorrectButton[1] = findViewById(R.id.button2);
-                incorrectButton[2] = findViewById(R.id.button4);
-                break;
-            case 3:
-                incorrectButton[0] = findViewById(R.id.button1);
-                incorrectButton[1] = findViewById(R.id.button2);
-                incorrectButton[2] = findViewById(R.id.button3);
-                break;
-        }
-        return incorrectButton;
     }
 
     private void TimeBetweenQuestions(){
