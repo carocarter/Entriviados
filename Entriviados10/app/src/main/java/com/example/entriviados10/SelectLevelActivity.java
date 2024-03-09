@@ -2,11 +2,13 @@ package com.example.entriviados10;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -34,8 +36,11 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
 
     Toolbar toolbar2;
     Button buttonEasy, buttonMedium, buttonHard, perfilButton;
+    TextView totalScore;
+    int score;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle drawerToggle;
+    SharedPreferences sharedPreferences;
 
 
 
@@ -91,6 +96,17 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
                 sendGetRequest("hard");
             }
         });
+        totalScore = findViewById(R.id.scoreTextView);
+        sharedPreferences = getSharedPreferences("Score", MODE_PRIVATE);
+
+        //Retrieve score from the intent
+        Intent intent = getIntent();
+        if (intent != null) {
+            int score = intent.getIntExtra("score", 0) + sharedPreferences.getInt("score", 0);
+            totalScore.setText("Total score: " + score);
+        } else {
+            totalScore.setText("Total score: " + sharedPreferences.getInt("score", 0));
+        }
     }
 
     @Override
@@ -141,6 +157,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
                     Intent intent = new Intent(SelectLevelActivity.this, GameActivity.class);
                     intent.putExtra("questions", questions);
                     intent.putExtra("questionIndex", 0);
+                    intent.putExtra("score", 0);
                     startActivity(intent);
                 } else {
                     //----! Error message

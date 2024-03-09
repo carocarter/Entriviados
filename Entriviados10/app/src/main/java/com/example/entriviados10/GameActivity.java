@@ -29,8 +29,8 @@ public class GameActivity extends AppCompatActivity {
     private ConstraintLayout constraintLayout;
     private ProgressBar progressBar;
     private CountDownTimer timer;
-
-
+    private int progress;
+    private int score;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,8 +45,11 @@ public class GameActivity extends AppCompatActivity {
         if (intent != null) {
             questions = (Question[]) intent.getSerializableExtra("questions");
             questionIndex = intent.getIntExtra("questionIndex", 0);
+            score = intent.getIntExtra("score", 0);
 
             TextView textView = findViewById(R.id.textView);
+            TextView scoreTextView = findViewById(R.id.scoreTextView);
+
             Button button1 = findViewById(R.id.button1);
             Button button2 = findViewById(R.id.button2);
             Button button3 = findViewById(R.id.button3);
@@ -54,6 +57,7 @@ public class GameActivity extends AppCompatActivity {
 
             //Set the texts
             textView.setText(questions[questionIndex].getQuestion().getText());
+            scoreTextView.setText("Score: " + score);
 
             List<String> answerOptions = new ArrayList<>(); //List with all answer options
             answerOptions.add(questions[questionIndex].getCorrectAnswer());
@@ -92,7 +96,7 @@ public class GameActivity extends AppCompatActivity {
         final long totalDuration = 10000;
         timer = new CountDownTimer(totalDuration, 100) {
             public void onTick(long millisUntilFinished) {
-                int progress = (int) (((float) millisUntilFinished / totalDuration) * 100);
+                progress = (int) (((float) millisUntilFinished / totalDuration) * 100);
                 progressBar.setProgress(progress);
             }
 
@@ -105,11 +109,11 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void handleButtonClick(int clickedButtonIndex) {
-        timer.cancel();
         Button clicked = buttons[clickedButtonIndex];
 
-        // Color the clicked button
+        //Color the clicked button
         if (clickedButtonIndex == correctButtonIndex) {
+            score += (int) Math.ceil((double) progress / 10);
             clicked.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.green));
             constraintLayout.setBackgroundColor(Color.parseColor("#A1BCFEC2"));
         } else {
@@ -117,6 +121,7 @@ public class GameActivity extends AppCompatActivity {
             correctButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.green));
             constraintLayout.setBackgroundColor(Color.parseColor("#A1FDB1AF"));
         }
+        timer.cancel();
         TimeBetweenQuestions();
     }
 
@@ -128,8 +133,10 @@ public class GameActivity extends AppCompatActivity {
             intent = new Intent(GameActivity.this, GameActivity.class);
             intent.putExtra("questions", questions);
             intent.putExtra("questionIndex", questionIndex);
+            intent.putExtra("score", score);
         } else {
             intent = new Intent(GameActivity.this, SelectLevelActivity.class);
+            intent.putExtra("score", score);
         }
         startActivity(intent);
         finish();
