@@ -32,6 +32,8 @@
             android:name=".GameActivity" />
         <activity
             android:name=".PerfilActivity" />
+        <activity
+            android:name=".ScoreActivity" />
     </application>
 
 </manifest>

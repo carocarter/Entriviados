@@ -135,7 +135,7 @@ public class GameActivity extends AppCompatActivity {
             intent.putExtra("questionIndex", questionIndex);
             intent.putExtra("score", score);
         } else {
-            intent = new Intent(GameActivity.this, SelectLevelActivity.class);
+            intent = new Intent(GameActivity.this, ScoreActivity.class);
             intent.putExtra("score", score);
         }
         startActivity(intent);
