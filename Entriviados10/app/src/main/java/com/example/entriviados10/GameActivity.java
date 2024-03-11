@@ -1,16 +1,18 @@
 package com.example.entriviados10;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -28,8 +30,13 @@ public class GameActivity extends AppCompatActivity {
     private Button correctButton;
     private ConstraintLayout constraintLayout;
     private ProgressBar progressBar;
-    private CountDownTimer timer;
     private int progress;
+    private CountDownTimer timer;
+    private long totalTime = 10000; //10 seconds per question
+    private long remainingTime = 0;
+    private boolean timerRunning = false;
+    private CountDownTimer delayTimer;
+    private long delay = 0;
     private int score;
 
     @Override
@@ -91,22 +98,27 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void startTimer() {
-        // Timer for 10 seconds
-        final long totalDuration = 10000;
-        timer = new CountDownTimer(totalDuration, 100) {
+    private void startTimer(long remainingTime) {
+        timerRunning = true;
+        timer = new CountDownTimer(remainingTime, 100) {
             public void onTick(long millisUntilFinished) {
-                progress = (int) (((float) millisUntilFinished / totalDuration) * 100);
+                progress = (int) (((float) (millisUntilFinished) / totalTime) * 100);
                 progressBar.setProgress(progress);
             }
 
             public void onFinish() {
                 correctButton.setBackgroundTintList(ContextCompat.getColorStateList(GameActivity.this, R.color.green));
                 constraintLayout.setBackgroundColor(Color.parseColor("#A1FDB1AF"));
-                TimeBetweenQuestions();
+                timeBetweenQuestions();
+                timerRunning = false;
             }
         }.start();
     }
+
+    private void startTimer() {
+        startTimer(totalTime);
+    }
+
 
     private void handleButtonClick(int clickedButtonIndex) {
         Button clicked = buttons[clickedButtonIndex];
@@ -122,7 +134,8 @@ public class GameActivity extends AppCompatActivity {
             constraintLayout.setBackgroundColor(Color.parseColor("#A1FDB1AF"));
         }
         timer.cancel();
-        TimeBetweenQuestions();
+        timerRunning = false;
+        timeBetweenQuestions();
     }
 
     private void startNextActivity() {
@@ -150,14 +163,64 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void TimeBetweenQuestions(){
-        long totalDuration = 3000;
-        timer = new CountDownTimer(totalDuration, 100) {
+    private void timeBetweenQuestions(long time){
+        delayTimer = new CountDownTimer(time, 100) {
             public void onTick(long millisUntilFinished) {
+                delay = millisUntilFinished;
             }
             public void onFinish() {
                 startNextActivity();
             }
         }.start();
+    }
+
+    private void timeBetweenQuestions(){
+        long totalDuration = 3000; //Time pause between questions
+        timeBetweenQuestions(totalDuration);
+    }
+
+    //If the user press the back button during the game
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            if (delay > 0){
+                //Stop the delay timer
+                delayTimer.cancel();
+            }
+
+            //Stop the timer and store the remaining time
+            if (timerRunning && timer != null) {
+                timer.cancel();
+                remainingTime = progress * (totalTime / 100);
+                timerRunning = false;
+            }
+
+            //Alert that the progress will be lost
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirmation")
+                    .setMessage("Are you sure you want to go back? Your progress will be lost.")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //User clicked OK button, finishing the activity
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //User clicked Cancel button, resuming the timer
+                            if (!timerRunning && delay == 0) {
+                                startTimer(remainingTime);
+                                timerRunning = true;
+                            }
+                            if(delay > 0) {
+                                timeBetweenQuestions(delay);
+                            }
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

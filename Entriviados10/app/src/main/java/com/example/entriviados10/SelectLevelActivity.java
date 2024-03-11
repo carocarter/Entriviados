@@ -37,8 +37,6 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
 
     Toolbar toolbar2;
     Button buttonEasy, buttonMedium, buttonHard, perfilButton;
-    TextView totalScore;
-    int score;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle drawerToggle;
     SharedPreferences sharedPreferences;
@@ -95,25 +93,19 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
                 sendGetRequest("hard");
             }
         });
-        totalScore = findViewById(R.id.scoreTextView);
-        sharedPreferences = getSharedPreferences("score", MODE_PRIVATE);
+        TextView totalScoreView = findViewById(R.id.scoreTextView);
 
-        //Retrieve score from the intent
-        Intent intent = getIntent();
-        score = sharedPreferences.getInt("score", 0);
-        if (intent != null) {
-            score += intent.getIntExtra("score", 0);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("score", score);
-            editor.apply();
-        }
+        //Retrieve score from the preferences
+
+        sharedPreferences = getSharedPreferences("totalScore", MODE_PRIVATE);
+        int totalScore = sharedPreferences.getInt("totalScore", 0);
 
         //If the score is zero the Total score isn't shown
-        if (score > 0){
-            totalScore.setVisibility(View.VISIBLE);
-            totalScore.setText("Total score: " + score);
+        if (totalScore > 0){
+            totalScoreView.setVisibility(View.VISIBLE);
+            totalScoreView.setText("Total score: " + totalScore);
         } else {
-            totalScore.setVisibility(View.GONE);
+            totalScoreView.setVisibility(View.GONE);
         }
     }
 

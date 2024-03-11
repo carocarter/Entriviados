@@ -31,11 +31,17 @@ public class ScoreActivity extends AppCompatActivity {
         score = intent.getIntExtra("score", 0);
         scoreview.setText("Score: " + score);
 
+        //Save score in preferences
+        sharedPreferences = getSharedPreferences("totalScore", MODE_PRIVATE);
+        int totalScore = score + sharedPreferences.getInt("totalScore", 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("totalScore", totalScore);
+        editor.apply();
+
         playAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent (ScoreActivity.this, SelectLevelActivity.class);
-                intent.putExtra("score", score);
                 startActivity(intent);
                 finish();
             }
