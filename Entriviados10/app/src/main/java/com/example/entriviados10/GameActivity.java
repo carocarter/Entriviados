@@ -129,7 +129,6 @@ public class GameActivity extends AppCompatActivity {
         questionIndex++; //Increment the questionIndex
         Intent intent;
         if (questionIndex < questions.length) { //Number of questions in a game
-            //----! Exchange for the end of game Activity!!
             intent = new Intent(GameActivity.this, GameActivity.class);
             intent.putExtra("questions", questions);
             intent.putExtra("questionIndex", questionIndex);

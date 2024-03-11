@@ -15,6 +15,7 @@ public class ScoreActivity extends AppCompatActivity {
     TextView scoreview;
     SharedPreferences sharedPreferences;
     Button playAgain;
+    int score;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,22 +26,18 @@ public class ScoreActivity extends AppCompatActivity {
         playAgain = findViewById(R.id.playAgain);
 
 
-        sharedPreferences = getSharedPreferences("Score", MODE_PRIVATE);
-
         //Retrieve score from the intent
         Intent intent = getIntent();
-        if (intent != null) {
-            int score = intent.getIntExtra("score", 0) + sharedPreferences.getInt("score", 0);
-            scoreview.setText("Total score: " + score);
-        } else {
-            scoreview.setText("Total score: " + sharedPreferences.getInt("score", 0));
-        }
+        score = intent.getIntExtra("score", 0);
+        scoreview.setText("Score: " + score);
 
         playAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent (ScoreActivity.this, SelectLevelActivity.class);
+                intent.putExtra("score", score);
                 startActivity(intent);
+                finish();
             }
         });
 

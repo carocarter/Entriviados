@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -41,8 +42,6 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle drawerToggle;
     SharedPreferences sharedPreferences;
-
-
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -97,15 +96,24 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
             }
         });
         totalScore = findViewById(R.id.scoreTextView);
-        sharedPreferences = getSharedPreferences("Score", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("score", MODE_PRIVATE);
 
         //Retrieve score from the intent
         Intent intent = getIntent();
+        score = sharedPreferences.getInt("score", 0);
         if (intent != null) {
-            int score = intent.getIntExtra("score", 0) + sharedPreferences.getInt("score", 0);
+            score += intent.getIntExtra("score", 0);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("score", score);
+            editor.apply();
+        }
+
+        //If the score is zero the Total score isn't shown
+        if (score > 0){
+            totalScore.setVisibility(View.VISIBLE);
             totalScore.setText("Total score: " + score);
         } else {
-            totalScore.setText("Total score: " + sharedPreferences.getInt("score", 0));
+            totalScore.setVisibility(View.GONE);
         }
     }
 
@@ -164,7 +172,10 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(SelectLevelActivity.this, "Error: Network failure", Toast.LENGTH_SHORT).show();
+                            new AlertDialog.Builder(SelectLevelActivity.this)
+                                    .setMessage("Error: Server failure")
+                                    .setPositiveButton("OK", null) // You can add an OnClickListener here if needed
+                                    .show();
                         }
                     });
                 }
@@ -176,7 +187,10 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(SelectLevelActivity.this, "Error: Network failure", Toast.LENGTH_SHORT).show();
+                        new AlertDialog.Builder(SelectLevelActivity.this)
+                                .setMessage("Error: Network failure")
+                                .setPositiveButton("OK", null) // You can add an OnClickListener here if needed
+                                .show();
                     }
                 });
             }
