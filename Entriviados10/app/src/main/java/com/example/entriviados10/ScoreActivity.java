@@ -29,7 +29,7 @@ public class ScoreActivity extends AppCompatActivity {
         //Retrieve score from the intent
         Intent intent = getIntent();
         score = intent.getIntExtra("score", 0);
-        scoreview.setText("Score: " + score);
+        scoreview.setText("Final score:\n" + score);
 
         //Save score in preferences
         sharedPreferences = getSharedPreferences("totalScore", MODE_PRIVATE);

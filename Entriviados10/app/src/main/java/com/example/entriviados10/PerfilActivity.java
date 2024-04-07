@@ -1,18 +1,21 @@
 package com.example.entriviados10;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class PerfilActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
+    private TextView totalScoreView;
+    private Toolbar toolbar;
+    private SharedPreferences sharedPreferences;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -20,18 +23,21 @@ public class PerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
+        totalScoreView = findViewById(R.id.textView6);
         toolbar = findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Main Menu");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
+        getSupportActionBar().setTitle(null);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
-            onBackPressed();
-            return true;
-        }return super.onOptionsItemSelected(item);
+        //Display total score
+        sharedPreferences = getSharedPreferences("totalScore", MODE_PRIVATE);
+        int totalScore = sharedPreferences.getInt("totalScore", 0);
+        totalScoreView.setText("Total score: " + totalScore);
     }
 }

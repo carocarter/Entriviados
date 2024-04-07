@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,33 +36,18 @@ import okhttp3.Response;
 
 public class SelectLevelActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    Toolbar toolbar2;
-    Button buttonEasy, buttonMedium, buttonHard, perfilButton;
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle drawerToggle;
+    Button buttonEasy, buttonMedium, buttonHard;
+    ImageButton profileButton;
     SharedPreferences sharedPreferences;
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level_select);
+        profileButton = findViewById(R.id.profileButton);
 
-        drawerLayout = findViewById(R.id.main_layout);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,R.string.app_name,R.string.app_name);
-        drawerLayout.addDrawerListener(drawerToggle);
-
-        toolbar2 = findViewById(R.id.toolbar2);
-        setSupportActionBar(toolbar2);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        // getSupportActionBar().setTitle("Main Menu");
-
-        perfilButton = findViewById(R.id.perfilbutton);
-
-        perfilButton.setOnClickListener(new View.OnClickListener() {
+        profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectLevelActivity.this, PerfilActivity.class);
@@ -103,26 +89,10 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
         //If the score is zero the Total score isn't shown
         if (totalScore > 0){
             totalScoreView.setVisibility(View.VISIBLE);
-            totalScoreView.setText("Total score: " + totalScore);
+            totalScoreView.setText("Total score:\n" + totalScore);
         } else {
             totalScoreView.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        {
-
-        }
-        drawerToggle.onOptionsItemSelected(item);
-        return true;
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
     }
 
     @Override
@@ -130,8 +100,8 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         switch (i){
-        case 0:
-                       break;
+            case 0:
+                break;
     }
     transaction.commit();
     }
@@ -160,7 +130,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
                     intent.putExtra("score", 0);
                     startActivity(intent);
                 } else {
-                    //----! Error message
+                    //Error message
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -175,7 +145,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
 
             @Override
             public void onFailure(Call call, IOException e) {
-                //----! Error message
+                //Error message
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

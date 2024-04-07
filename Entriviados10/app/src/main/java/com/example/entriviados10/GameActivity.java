@@ -1,13 +1,16 @@
 package com.example.entriviados10;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -29,6 +32,7 @@ public class GameActivity extends AppCompatActivity {
     private Button[] buttons;
     private Button correctButton;
     private ConstraintLayout constraintLayout;
+    private ImageView imageView;
     private ProgressBar progressBar;
     private int progress;
     private CountDownTimer timer;
@@ -46,6 +50,7 @@ public class GameActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar);
         constraintLayout = findViewById(R.id.constraintlayout);
+        imageView = findViewById(R.id.imageView3);
 
         //Retrieve values from the intent
         Intent intent = getIntent();
@@ -64,7 +69,7 @@ public class GameActivity extends AppCompatActivity {
 
             //Set the texts
             textView.setText(questions[questionIndex].getQuestion().getText());
-            scoreTextView.setText("Score: " + score);
+            scoreTextView.setText("Score:\n" + score);
 
             List<String> answerOptions = new ArrayList<>(); //List with all answer options
             answerOptions.add(questions[questionIndex].getCorrectAnswer());
@@ -106,9 +111,11 @@ public class GameActivity extends AppCompatActivity {
                 progressBar.setProgress(progress);
             }
 
+            @SuppressLint("ResourceAsColor")
             public void onFinish() {
-                correctButton.setBackgroundTintList(ContextCompat.getColorStateList(GameActivity.this, R.color.green));
-                constraintLayout.setBackgroundColor(Color.parseColor("#A1FDB1AF"));
+                correctButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(GameActivity.this, R.color.green)));
+                constraintLayout.setBackgroundColor(ContextCompat.getColor(GameActivity.this, R.color.background_error));
+                imageView.setBackground(getDrawable(R.drawable.error_bg));
                 timeBetweenQuestions();
                 timerRunning = false;
             }
@@ -120,18 +127,21 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("ResourceAsColor")
     private void handleButtonClick(int clickedButtonIndex) {
         Button clicked = buttons[clickedButtonIndex];
 
         //Color the clicked button
         if (clickedButtonIndex == correctButtonIndex) {
             score += (int) Math.ceil((double) progress / 10);
-            clicked.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.green));
-            constraintLayout.setBackgroundColor(Color.parseColor("#A1BCFEC2"));
+            clicked.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(GameActivity.this, R.color.green)));
+            constraintLayout.setBackgroundColor(ContextCompat.getColor(GameActivity.this, R.color.background_correct));
+            imageView.setBackground(getDrawable(R.drawable.correct_bg));
         } else {
-            clicked.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red));
-            correctButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.green));
-            constraintLayout.setBackgroundColor(Color.parseColor("#A1FDB1AF"));
+            clicked.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(GameActivity.this, R.color.button_error)));
+            correctButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(GameActivity.this, R.color.green)));
+            constraintLayout.setBackgroundColor(ContextCompat.getColor(GameActivity.this, R.color.background_error));
+            imageView.setBackground(getDrawable(R.drawable.error_bg));
         }
         timer.cancel();
         timerRunning = false;
