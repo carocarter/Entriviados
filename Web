@@ -1,1 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Entriviados</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="main.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0" href=""><img src="/Entriviados_web/assets/img/logo_processed.png" class="img-fluid" alt="">
+      </a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="#home">Inicio</a></li>
+          <li><a href="#aboutus">Sobre nosotros</a></li>
+          <li><a href="#contact">Contacto</a></li>
+        </ul>
+      </nav><!-- .navbar -->
+
+      <a class="btn-download-our-app" href="#download-our-app">Descarga la app</a>
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+
+    </div>
+  </header><!-- End Header -->
+
+  <!-- Home -->
+  <section id="home" class="home d-flex align-items-center section-bg">
+    <div class="container">
+      <div class="row justify-content-between gy-5">
+        <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
+          <h2 data-aos="fade-up">¡Bienvenido a Entriviados! <br>Demuestra tus conocimientos en este emocionante juego de trivia</h2>
+          <p data-aos="fade-up" data-aos-delay="100">Contesta preguntas de diferentes categorías y acumula puntos para convertirte en el campeón de Entriviados.</p>
+          <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
+            <a href="#download-our-app" class="btn-download-our-app">Descarga la app</a>
+            <a href="" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Ver vídeo</span></a>
+          </div>
+        </div>
+        <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
+          <img src="/Entriviados_web/assets/img/e-logo_processed.png" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300">
+        </div>
+      </div>
+    </div>
+  </section><!-- End Home -->
+
+  <main id="main">
+
+    <!-- Sobre nosotros -->
+    <section id="aboutus" class="aboutus">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2>Sobre nosotros</h2>
+          <p>Descubre más <span>sobre nosotros</span></p>
+        </div>
+
+        <div class="row gy-4">
+          <div class="col-lg-7 position-relative about-img" style="background-image: url(/Entriviados_web/assets/img/animacion-cuadrado.mp4) ;" data-aos="fade-up" data-aos-delay="150">
+          </div>
+          <div class="col-lg-5 d-flex align-items-end" data-aos="fade-up" data-aos-delay="300">
+            <div class="content ps-0 ps-lg-5">
+              <p class="fst-italic">
+                ¡Bienvenido a Entriviados! Demuestra tus conocimientos en este emocionante juego de trivia
+              </p>
+              <ul>
+                <i class="bi bi-check2-all"></i> Desafía tu mente con preguntas de historia, ciencia, cultura general, deportes y mucho más.<br>
+                <i class="bi bi-check2-all"></i> Explora nuestras diversas categorías de preguntas para encontrar tu área de especialización.<br>
+                <i class="bi bi-check2-all"></i> ¡Acumula puntos con cada respuesta correcta y sigue tu progreso en la tabla de clasificación!<br>
+              </ul>
+              <p>
+                Desafía a tus amigos y compite por la puntuación más alta en Entriviados
+              </p>
+              <div class="position-relative mt-4">
+                <img src="" class="img-fluid" alt="">
+                <a href="" class="glightbox play-btn"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Sobre nosotros -->
+
+       <!-- Testimonios -->
+    <section id="testimonials" class="testimonials section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2>Otros jugadores</h2>
+          <p>Lo que dicen <span>sobre nosotros</span></p>
+        </div>
+
+        <div class="slides-1 swiper" data-aos="fade-up" data-aos-delay="100">
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <div class="row gy-4 justify-content-center">
+                  <div class="col-lg-6">
+                    <div class="testimonial-content">
+                      <p>
+                        <i class="bi bi-quote quote-icon-left"></i>
+                        ¡Entriviados es increíble! Como amante de la historia, me encanta poner a prueba mis conocimientos en las preguntas de historia. ¡Es emocionante aprender mientras juego y competir con amigos!
+                        <i class="bi bi-quote quote-icon-right"></i>
+                      </p>
+                      <h3>Marcos García</h3>
+                      <h4>Ceo &amp; Fundador</h4>
+                      <div class="stars">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End testimonio -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <div class="row gy-4 justify-content-center">
+                  <div class="col-lg-6">
+                    <div class="testimonial-content">
+                      <p>
+                        <i class="bi bi-quote quote-icon-left"></i>
+                        ¡Entriviados me tiene enganchado! Las preguntas de ciencia son desafiantes y divertidas. Me encanta enfrentarme a ellas y aprender algo nuevo cada vez que juego. ¡Es genial competir por la puntuación más alta
+                        <i class="bi bi-quote quote-icon-right"></i>
+                      </p>
+                      <h3>Sara Jaramillo</h3>
+                      <h4>Profesora</h4>
+                      <div class="stars">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End testimonio -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <div class="row gy-4 justify-content-center">
+                  <div class="col-lg-6">
+                    <div class="testimonial-content">
+                      <p>
+                        <i class="bi bi-quote quote-icon-left"></i>
+                        ¡No puedo dejar de jugar a Entriviados! Las preguntas de cultura pop son mi debilidad, y este juego las tiene en abundancia. Es genial poner a prueba mis conocimientos sobre películas, música y más. ¡Definitivamente recomiendo este juego a todos los fanáticos de la cultura pop!
+                        <i class="bi bi-quote quote-icon-right"></i>
+                      </p>
+                      <h3>Marta Pérez</h3>
+                      <h4>Encargada</h4>
+                      <div class="stars">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End testimonio -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <div class="row gy-4 justify-content-center">
+                  <div class="col-lg-6">
+                    <div class="testimonial-content">
+                      <p>
+                        <i class="bi bi-quote quote-icon-left"></i>
+                        ¡Entriviados es el juego perfecto para los amantes del deporte como yo! Las preguntas sobre deportes son desafiantes y emocionantes. Me encanta competir con mis amigos y ver quién puede obtener la puntuación más alta. ¡Es una manera divertida de poner a prueba mis conocimientos deportivos!
+                        <i class="bi bi-quote quote-icon-right"></i>
+                      </p>
+                      <h3>Juan Parras</h3>
+                      <h4>Enmpresario</h4>
+                      <div class="stars">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End testimonio -->
+
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+      </div>
+    </section><!-- End Testimonios -->
+
+
+
+ 
+    <!-- Descarga nuestra app -->
+    <section id="download-our-app" class="download-our-app">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2>Descarga la app</h2>
+          <p>Descarga <span>Entriviados</span></p>
+        </div>
+
+        <div class="row g-0">
+
+          <div class="col-lg-4 download-img" style="background-image: url();" data-aos="zoom-out" data-aos-delay="200"></div>
+        </div>
+
+      </div>
+    </section><!-- End Descarga nuestra app -->
+
+    <!-- Galería -->
+    <section id="gallery" class="gallery section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2>Galería</h2>
+          <p>Fotos de <span>nuestro juego</span></p>
+        </div>
+
+        <div class="gallery-slider swiper">
+          <div class="swiper-wrapper align-items-center">
+            <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href=""><img src="/Entriviados_web/assets/img/inicio_processed.png" class="img-fluid" alt=""></a></div>
+            <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href=""><img src="/Entriviados_web/assets/img/login_processed.png" class="img-fluid" alt=""></a></div>
+            <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href=""><img src="/Entriviados_web/assets/img/question-1_processed.png" class="img-fluid" alt=""></a></div>
+            <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href=""><img src="/Entriviados_web/assets/img/question-2_processed.png" class="img-fluid" alt=""></a></div>
+            <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href=""><img src="/Entriviados_web/assets/img/question-3_processed.png" class="img-fluid" alt=""></a></div>
+            <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href=""><img src="/Entriviados_web/assets/img/question-4_processed.png" class="img-fluid" alt=""></a></div>
+            <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href=""><img src="/Entriviados_web/assets/img/win_processed.png" class="img-fluid" alt=""></a></div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+      </div>
+    </section><!-- End Galería -->
+
+    <!-- Contacto -->
+    <section id="contact" class="contact">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2>Contacto</h2>
+          <p>¿Quieres saber más? <span>Contacta con nosotros</span></p>
+        </div>
+
+        <div class="mb-3">
+          <iframe style="border:0; width: 100%; height: 350px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3036.7101137868895!2d-3.718013324322818!3d40.437417454380494!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd42284378da8e63%3A0xfc0ef81fd4c8e0db!2sCEV%20-%20Escuela%20Superior%20de%20Formaci%C3%B3n%20Audiovisual%2C%20Animaci%C3%B3n%203D%20y%20Nuevas%20Tecnolog%C3%ADas!5e0!3m2!1sen!2ses!4v1709804814318!5m2!1sen!2ses"
+          frameborder="0" allowfullscreen></iframe>
+        </div><!-- End Google Maps -->
+
+        <div class="row gy-4">
+
+          <div class="col-md-6">
+            <div class="info-item  d-flex align-items-center">
+              <i class="icon bi bi-map flex-shrink-0"></i>
+              <div>
+                <h3>Dirección</h3>
+                <p>Calle de Gaztambide, 65, 28015 Madrid</p>
+              </div>
+            </div>
+          </div><!-- End Info -->
+
+          <div class="col-md-6">
+            <div class="info-item d-flex align-items-center">
+              <i class="icon bi bi-envelope flex-shrink-0"></i>
+              <div>
+                <h3>Mándanos un email</h3>
+                <p>info@cev.com</p>
+              </div>
+            </div>
+          </div><!-- End Info -->
+
+        </div>
+      </div>
+    </section><!-- End Contact Section -->
+
+  </main><!-- End #main -->
+
+  <!-- Footer -->
+  <footer id="footer" class="footer">
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>Entriviados</span></strong>. Todos los derechos reservados
+      </div>
+    </div>
+
+  </footer><!-- End Footer -->
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
