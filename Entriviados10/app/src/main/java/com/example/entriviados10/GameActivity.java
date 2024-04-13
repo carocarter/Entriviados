@@ -5,8 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +45,10 @@ public class GameActivity extends AppCompatActivity {
     private long delay = 0;
     private int score;
 
+    private MediaPlayer correctSound, wrongSound;
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +57,8 @@ public class GameActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         constraintLayout = findViewById(R.id.constraintlayout);
         imageView = findViewById(R.id.imageView3);
+        correctSound = MediaPlayer.create(this,R.raw.correct);
+        wrongSound = MediaPlayer.create(this, R.raw.error);
 
         //Retrieve values from the intent
         Intent intent = getIntent();
@@ -137,11 +145,13 @@ public class GameActivity extends AppCompatActivity {
             clicked.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(GameActivity.this, R.color.green)));
             constraintLayout.setBackgroundColor(ContextCompat.getColor(GameActivity.this, R.color.background_correct));
             imageView.setBackground(getDrawable(R.drawable.correct_bg));
+            correctSound.start();
         } else {
             clicked.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(GameActivity.this, R.color.button_error)));
             correctButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(GameActivity.this, R.color.green)));
             constraintLayout.setBackgroundColor(ContextCompat.getColor(GameActivity.this, R.color.background_error));
             imageView.setBackground(getDrawable(R.drawable.error_bg));
+            wrongSound.start();
         }
         timer.cancel();
         timerRunning = false;

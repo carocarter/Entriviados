@@ -3,6 +3,7 @@ package com.example.entriviados10;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,12 +41,23 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
     ImageButton profileButton;
     SharedPreferences sharedPreferences;
 
+    MediaPlayer mediaPlayer;
+
+    private Boolean isMusicPlaying = false;
+
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level_select);
         profileButton = findViewById(R.id.profileButton);
+
+        if (!isMusicPlaying) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.former102685);
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
+            isMusicPlaying = true;
+        }
 
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,5 +169,14 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
                 });
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mediaPlayer != null && isMusicPlaying) {
+            mediaPlayer.pause();
+            isMusicPlaying = false;
+        }
     }
 }
