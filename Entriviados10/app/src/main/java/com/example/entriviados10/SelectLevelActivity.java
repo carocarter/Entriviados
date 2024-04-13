@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,9 +41,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
     Button buttonEasy, buttonMedium, buttonHard;
     ImageButton profileButton;
     SharedPreferences sharedPreferences;
-
     MediaPlayer mediaPlayer;
-
     private Boolean isMusicPlaying = false;
 
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
@@ -92,6 +91,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
             }
         });
         TextView totalScoreView = findViewById(R.id.scoreTextView);
+        ImageView scoreSquare = findViewById(R.id.scoreSquare);
 
         //Retrieve score from the preferences
 
@@ -101,9 +101,11 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
         //If the score is zero the Total score isn't shown
         if (totalScore > 0){
             totalScoreView.setVisibility(View.VISIBLE);
+            scoreSquare.setVisibility(View.VISIBLE);
             totalScoreView.setText("Total score:\n" + totalScore);
         } else {
             totalScoreView.setVisibility(View.GONE);
+            scoreSquare.setVisibility(View.GONE);
         }
     }
 

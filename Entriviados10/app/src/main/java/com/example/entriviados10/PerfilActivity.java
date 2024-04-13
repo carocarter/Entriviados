@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -23,7 +24,6 @@ public class PerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-        totalScoreView = findViewById(R.id.textView6);
         toolbar = findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
 
@@ -36,8 +36,12 @@ public class PerfilActivity extends AppCompatActivity {
         });
 
         //Display total score
+        totalScoreView = findViewById(R.id.textView6);
         sharedPreferences = getSharedPreferences("totalScore", MODE_PRIVATE);
         int totalScore = sharedPreferences.getInt("totalScore", 0);
         totalScoreView.setText("Total score: " + totalScore);
+
+        ImageView imageView = findViewById(R.id.imageView2);
+        imageView.setImageResource(R.drawable.profile);
     }
 }
