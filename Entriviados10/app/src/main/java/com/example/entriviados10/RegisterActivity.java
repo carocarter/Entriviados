@@ -85,6 +85,15 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void createAccount(String email, String password) {
+
+        if (!isValidEmail(email)) {
+            Toast.makeText(this, "Correo electrónico inválido", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!isValidPassword(password)) {
+            Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
+            return;
+        }
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -107,15 +116,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         guardarUsuarios();
     }
-
-//    private void updateUI(FirebaseUser user) {
-//        if (user != null) {
-//          //  Toast.makeText(this, "Authentication successful", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
     private void guardarUsuarios() {
         String name = userName.getText().toString();
         String email = this.email.getText().toString();
@@ -140,6 +140,16 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Error al registrar usuario: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+    }
+    private boolean isValidEmail(String email) {
+        // Utiliza una expresión regular para verificar el formato del correo electrónico
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        return email.matches(emailPattern);
+    }
+
+    private boolean isValidPassword(String password) {
+        // Comprueba si la longitud de la contraseña es al menos 6 caracteres
+        return password.length() >= 6;
     }
 }
 
