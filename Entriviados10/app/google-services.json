@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "43113381230",
+    "project_id": "entriviados-aa084",
+    "storage_bucket": "entriviados-aa084.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43113381230:android:9e57ee6b05026b7f73d57f",
+        "android_client_info": {
+          "package_name": "com.example.entriviados10"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5PjqBVG5g76F0q6J1qogM4a9b2MVEbWI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
