@@ -44,6 +44,19 @@
         app:srcCompat="@drawable/competencia"
         android:contentDescription="Podium button"/>
 
+    <ImageButton
+        android:id="@+id/imagelogout"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="68dp"
+        android:backgroundTint="#00FFFFFF"
+        android:contentDescription="Podium button"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/shutdown" />
+
     <Button
         android:id="@+id/buttoneasy"
         android:layout_width="300dp"

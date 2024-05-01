@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Intent intent = new Intent(MainActivity.this, SelectLevelActivity.class);
                             startActivity(intent);
+                            finish();
                         } else {
                             // Si falla el inicio de sesión, mostrar un mensaje de error
                             Toast.makeText(MainActivity.this, "Authentication failed",

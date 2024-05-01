@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -39,7 +40,7 @@ import okhttp3.Response;
 public class SelectLevelActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     Button buttonEasy, buttonMedium, buttonHard;
-    ImageButton profileButton;
+    ImageButton profileButton, logoutButton;
     SharedPreferences sharedPreferences;
     MediaPlayer mediaPlayer;
     private Boolean isMusicPlaying = false;
@@ -50,6 +51,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level_select);
         profileButton = findViewById(R.id.profileButton);
+        logoutButton = findViewById(R.id.imagelogout);
 
         if (!isMusicPlaying) {
             mediaPlayer = MediaPlayer.create(this, R.raw.former102685);
@@ -63,6 +65,20 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
             public void onClick(View view) {
                 Intent intent = new Intent(SelectLevelActivity.this, PerfilActivity.class);
                 startActivity(intent);
+            }
+        });
+
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cierra la sesión del usuario
+                FirebaseAuth.getInstance().signOut();
+
+                // Redirige al usuario a la pantalla de inicio de sesión
+                Intent intent = new Intent(SelectLevelActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish(); // Termina la actividad actual
             }
         });
 
