@@ -32,6 +32,12 @@
         <activity android:name=".GameActivity" />
         <activity android:name=".PerfilActivity" />
         <activity android:name=".ScoreActivity" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/push_icon" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/background" />
     </application>
 
 </manifest>
