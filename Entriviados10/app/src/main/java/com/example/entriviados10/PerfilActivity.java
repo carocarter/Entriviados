@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,8 @@ public class PerfilActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private SharedPreferences sharedPreferences;
 
+    private ImageButton logoutButton;
+
 
 
     @SuppressLint("MissingInflatedId")
@@ -38,6 +41,7 @@ public class PerfilActivity extends AppCompatActivity {
         setContentView(R.layout.activity_perfil);
 
         toolbar = findViewById(R.id.toolbar3);
+        logoutButton = findViewById(R.id.imagelogout);
 
         setSupportActionBar(toolbar);
 
@@ -57,7 +61,25 @@ public class PerfilActivity extends AppCompatActivity {
 
         ImageView imageView = findViewById(R.id.imageView2);
         imageView.setImageResource(R.drawable.profile);
+
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cierra la sesión del usuario
+                FirebaseAuth.getInstance().signOut();
+
+                // Redirige al usuario a la pantalla de inicio de sesión
+                Intent intent = new Intent(PerfilActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish(); // Termina la actividad actual
+            }
+        });
     }
+
+
+
+
 
     public void confirmDeleteAccount(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -101,4 +123,5 @@ public class PerfilActivity extends AppCompatActivity {
                     });
         }
     }
+
 }

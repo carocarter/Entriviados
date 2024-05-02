@@ -40,7 +40,7 @@ import okhttp3.Response;
 public class SelectLevelActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     Button buttonEasy, buttonMedium, buttonHard;
-    ImageButton profileButton, logoutButton;
+    ImageButton profileButton, muteButton;
     SharedPreferences sharedPreferences;
     MediaPlayer mediaPlayer;
     private Boolean isMusicPlaying = false;
@@ -51,7 +51,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level_select);
         profileButton = findViewById(R.id.profileButton);
-        logoutButton = findViewById(R.id.imagelogout);
+        muteButton = findViewById(R.id.mutebutton);
 
         if (!isMusicPlaying) {
             mediaPlayer = MediaPlayer.create(this, R.raw.former102685);
@@ -68,17 +68,18 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
             }
         });
 
-
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        muteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Cierra la sesión del usuario
-                FirebaseAuth.getInstance().signOut();
-
-                // Redirige al usuario a la pantalla de inicio de sesión
-                Intent intent = new Intent(SelectLevelActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish(); // Termina la actividad actual
+                if (mediaPlayer != null) {
+                    if (mediaPlayer.isPlaying()) {
+                        mediaPlayer.pause();
+                        muteButton.setImageResource(R.drawable.musicoff);
+                    } else {
+                        mediaPlayer.start();
+                        muteButton.setImageResource(R.drawable.music);
+                    }
+                }
             }
         });
 
@@ -188,6 +189,21 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                // Si la música está sonando, muestra el icono de sonido activado
+                muteButton.setImageResource(R.drawable.music);
+            } else {
+                // Si la música está pausada, muestra el icono de sonido desactivado
+                muteButton.setImageResource(R.drawable.musicoff);
+            }
+        }
+    }
+
 
     @Override
     protected void onStop() {
