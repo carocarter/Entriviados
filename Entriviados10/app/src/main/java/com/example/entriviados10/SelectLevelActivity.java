@@ -14,6 +14,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +63,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
         setContentView(R.layout.level_select);
         profileButton = findViewById(R.id.profileButton);
         muteButton = findViewById(R.id.mutebutton);
+        checkAndRequestNotificationPermission();
 
         if (!isMusicPlaying) {
             mediaPlayer = MediaPlayer.create(this, R.raw.former102685);
@@ -204,7 +216,6 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
         }
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -213,4 +224,40 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
             isMusicPlaying = false;
         }
     }
+
+    // Check or request the permission
+    private void checkAndRequestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                askNotificationPermission();
+            }
+        }
+    }
+
+    private void askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                // FCM SDK (and your app) can post notifications.
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                // Show an educational UI explaining to the user the purpose of the notification permission
+            } else {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }
+    }
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    // Permission granted, FCM SDK (and your app) can post notifications.
+                    Toast.makeText(this, "Notification permission granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Permission denied, inform the user or handle accordingly
+                    Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show();
+                }
+            });
 }
