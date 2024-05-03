@@ -222,6 +222,8 @@ public class GameActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             //User clicked OK button, finishing the activity
+                            Intent intent = new Intent(GameActivity.this, SelectLevelActivity.class);
+                            startActivity(intent);
                             finish();
                         }
                     })

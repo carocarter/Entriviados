@@ -1,11 +1,13 @@
 package com.example.entriviados10;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -147,6 +149,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
     }
 
     private void sendGetRequest(String difficulty) {
+        showLoadingAnimation();
         OkHttpClient client = new OkHttpClient();
 
         //Changes in the number of questions per round should be added to the parameters
@@ -169,16 +172,20 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
                     intent.putExtra("questionIndex", 0);
                     intent.putExtra("score", 0);
                     startActivity(intent);
+                    finish();
                 } else {
                     //Error message
-                    runOnUiThread(new Runnable() {
+                    runOnUiThread(() -> {
+                        dismissLoadingAnimation();
+                        new Runnable() {
                         @Override
                         public void run() {
                             new AlertDialog.Builder(SelectLevelActivity.this)
                                     .setMessage("Error: Server failure")
-                                    .setPositiveButton("OK", null) // You can add an OnClickListener here if needed
+                                    .setPositiveButton("OK", null)
                                     .show();
                         }
+                    };
                     });
                 }
             }
@@ -186,17 +193,34 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
             @Override
             public void onFailure(Call call, IOException e) {
                 //Error message
-                runOnUiThread(new Runnable() {
+                runOnUiThread( () -> {
+                    dismissLoadingAnimation();
+                    new Runnable() {
                     @Override
                     public void run() {
                         new AlertDialog.Builder(SelectLevelActivity.this)
                                 .setMessage("Error: Network failure")
-                                .setPositiveButton("OK", null) // You can add an OnClickListener here if needed
+                                .setPositiveButton("OK", null)
                                 .show();
                     }
+                };
                 });
             }
         });
+    }
+
+    private void showLoadingAnimation(){
+        setContentView(R.layout.activity_loading);
+        ImageView imageView = findViewById(R.id.loaderImageView);
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(imageView, "rotation", 0f, 360f);
+        rotation.setDuration(2000); // Adjust duration as needed
+        rotation.setRepeatCount(ObjectAnimator.INFINITE);
+        rotation.setInterpolator(new LinearInterpolator());
+        rotation.start();
+    }
+
+    private void dismissLoadingAnimation() {
+        setContentView(R.layout.level_select);
     }
 
     @Override
