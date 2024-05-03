@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,24 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -48,10 +39,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 public class SelectLevelActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     Button buttonEasy, buttonMedium, buttonHard;
-    ImageButton profileButton, muteButton;
+    ImageButton profileButton, rankingButton, muteButton;
     SharedPreferences sharedPreferences;
     MediaPlayer mediaPlayer;
     private Boolean isMusicPlaying = false;
@@ -61,6 +55,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level_select);
+        rankingButton = findViewById(R.id.rankingButton);
         profileButton = findViewById(R.id.profileButton);
         muteButton = findViewById(R.id.mutebutton);
         checkAndRequestNotificationPermission();
@@ -72,25 +67,24 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
             isMusicPlaying = true;
         }
 
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SelectLevelActivity.this, PerfilActivity.class);
-                startActivity(intent);
-            }
+        rankingButton.setOnClickListener(view -> {
+            Intent intent = new Intent(SelectLevelActivity.this, RankingActivity.class);
+            startActivity(intent);
         });
 
-        muteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mediaPlayer != null) {
-                    if (mediaPlayer.isPlaying()) {
-                        mediaPlayer.pause();
-                        muteButton.setImageResource(R.drawable.musicoff);
-                    } else {
-                        mediaPlayer.start();
-                        muteButton.setImageResource(R.drawable.music);
-                    }
+        profileButton.setOnClickListener(view -> {
+            Intent intent = new Intent(SelectLevelActivity.this, PerfilActivity.class);
+            startActivity(intent);
+        });
+
+        muteButton.setOnClickListener(v -> {
+            if (mediaPlayer != null) {
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
+                    muteButton.setImageResource(R.drawable.musicoff);
+                } else {
+                    mediaPlayer.start();
+                    muteButton.setImageResource(R.drawable.music);
                 }
             }
         });
@@ -99,36 +93,39 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
         buttonMedium = findViewById(R.id.buttonmedium);
         buttonHard = findViewById(R.id.buttonhard);
 
-        buttonEasy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendGetRequest("easy");
-            }
-        });
+        buttonEasy.setOnClickListener(view -> sendGetRequest("easy"));
 
-        buttonMedium.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendGetRequest("medium");
-            }
-        });
+        buttonMedium.setOnClickListener(view -> sendGetRequest("medium"));
 
-        buttonHard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendGetRequest("hard");
-            }
-        });
+        buttonHard.setOnClickListener(view -> sendGetRequest("hard"));
+
+        //Retrieve score from firebase
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userEmail = mAuth.getCurrentUser().getEmail();
+        db.collection("usuarios")
+                .whereEqualTo("email", userEmail)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Long score = document.getLong("score");
+                            if (score != null) {
+                                updateScoreUI(score.intValue());
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, "Error: unable to retrieve score", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    //Show or not show the score
+    private void updateScoreUI(int totalScore) {
         TextView totalScoreView = findViewById(R.id.scoreTextView);
         ImageView scoreSquare = findViewById(R.id.scoreSquare);
 
-        //Retrieve score from the preferences
-
-        sharedPreferences = getSharedPreferences("totalScore", MODE_PRIVATE);
-        int totalScore = sharedPreferences.getInt("totalScore", 0);
-
-        //If the score is zero the Total score isn't shown
-        if (totalScore > 0){
+        if (totalScore > 0) {
             totalScoreView.setVisibility(View.VISIBLE);
             scoreSquare.setVisibility(View.VISIBLE);
             totalScoreView.setText("Total score:\n" + totalScore);

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,15 +22,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class PerfilActivity extends AppCompatActivity {
 
     private TextView totalScoreView;
-    private Toolbar toolbar;
     private SharedPreferences sharedPreferences;
-
-    private ImageButton logoutButton;
-
 
 
     @SuppressLint("MissingInflatedId")
@@ -40,40 +37,46 @@ public class PerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-        toolbar = findViewById(R.id.toolbar3);
-        logoutButton = findViewById(R.id.imagelogout);
-
+        Toolbar toolbar = findViewById(R.id.toolbar3);
+        ImageButton logoutButton = findViewById(R.id.imagelogout);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle(null);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         //Display total score
         totalScoreView = findViewById(R.id.textView6);
-        sharedPreferences = getSharedPreferences("totalScore", MODE_PRIVATE);
-        int totalScore = sharedPreferences.getInt("totalScore", 0);
-        totalScoreView.setText("Total score: " + totalScore);
+        //Retrieve score from firebase
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userEmail = mAuth.getCurrentUser().getEmail();
+        db.collection("usuarios")
+                .whereEqualTo("email", userEmail)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Long score = document.getLong("score");
+                            if (score != null) {
+                                totalScoreView.setText("Total score: " + score.intValue());
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, "Error: unable to retrieve score", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         ImageView imageView = findViewById(R.id.imageView2);
         imageView.setImageResource(R.drawable.profile);
 
+        logoutButton.setOnClickListener(v -> {
+            // Cierra la sesión del usuario
+            FirebaseAuth.getInstance().signOut();
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Cierra la sesión del usuario
-                FirebaseAuth.getInstance().signOut();
-
-                // Redirige al usuario a la pantalla de inicio de sesión
-                Intent intent = new Intent(PerfilActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish(); // Termina la actividad actual
-            }
+            // Redirige al usuario a la pantalla de inicio de sesión
+            Intent intent = new Intent(PerfilActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish(); // Termina la actividad actual
         });
     }
 
@@ -85,17 +88,9 @@ public class PerfilActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Eliminar cuenta");
         builder.setMessage("¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.");
-        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                eliminarCuenta();
-            }
-        });
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        builder.setPositiveButton("Sí", (dialog, which) -> eliminarCuenta());
+        builder.setNegativeButton("Cancelar", (dialog, which) -> {
 
-            }
         });
         builder.show();
     }
@@ -105,20 +100,17 @@ public class PerfilActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             user.delete()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                // La cuenta se ha eliminado exitosamente.
-                                Toast.makeText(PerfilActivity.this, "Cuenta eliminada", Toast.LENGTH_SHORT).show();
-                                // Redirige al usuario a la pantalla de inicio de sesión
-                                Intent intent = new Intent(PerfilActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish(); // Termina la actividad actual
-                            } else {
-                                // Ocurrió un error al intentar eliminar la cuenta
-                                Toast.makeText(PerfilActivity.this, "Error al eliminar la cuenta", Toast.LENGTH_SHORT).show();
-                            }
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            // La cuenta se ha eliminado exitosamente.
+                            Toast.makeText(PerfilActivity.this, "Cuenta eliminada", Toast.LENGTH_SHORT).show();
+                            // Redirige al usuario a la pantalla de inicio de sesión
+                            Intent intent = new Intent(PerfilActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish(); // Termina la actividad actual
+                        } else {
+                            // Ocurrió un error al intentar eliminar la cuenta
+                            Toast.makeText(PerfilActivity.this, "Error al eliminar la cuenta", Toast.LENGTH_SHORT).show();
                         }
                     });
         }

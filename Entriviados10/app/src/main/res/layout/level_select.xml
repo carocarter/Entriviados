@@ -32,7 +32,7 @@
         android:contentDescription="Chat button"/>
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/rankingButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -132,7 +132,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scoreTextView" />
+        app:layout_constraintTop_toTopOf="@+id/scoreTextView"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/scoreTextView"
@@ -147,7 +148,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

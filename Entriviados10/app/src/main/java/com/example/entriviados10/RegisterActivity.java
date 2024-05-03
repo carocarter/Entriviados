@@ -126,12 +126,12 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "La contraseña no coincide", Toast.LENGTH_SHORT).show();
             return;
         }
-
         CollectionReference usuariosRef = db.collection("usuarios");
 
         Map<String, Object> usuario = new HashMap<>();
         usuario.put("nombre", name);
         usuario.put("email", email);
+        usuario.put("score", 0);
 
         usuariosRef.add(usuario)
                 .addOnSuccessListener(documentReference -> {
