@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.core:core-splashscreen:1.2.0-alpha01")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")

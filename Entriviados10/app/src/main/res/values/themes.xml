@@ -6,4 +6,11 @@
     </style>
 
     <style name="Theme.Entriviados10" parent="Base.Theme.Entriviados10" />
+
+    <style name="Theme.Entriviados10.MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_splash_anim</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/Theme.Entriviados10</item>
+    </style>
 </resources>

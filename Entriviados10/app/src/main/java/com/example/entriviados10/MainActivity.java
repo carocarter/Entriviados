@@ -5,14 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.View;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.splashscreen.SplashScreen;
+
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,12 +23,16 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer mediaPlayer;
     EditText email, password;
     TextView textView;
+    private boolean keepSplashAlive = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        splashScreen.setKeepOnScreenCondition(() -> keepSplashAlive);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> keepSplashAlive = false, 1000);
 
+        setContentView(R.layout.activity_main);
 
         mediaPlayer = MediaPlayer.create(this, R.raw.reflected_light_147979);
         mediaPlayer.setLooping(true);
@@ -42,29 +48,20 @@ public class MainActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
+        registerButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
 
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email2 = email.getText().toString();
-                String password2 = password.getText().toString();
-                signIn(email2, password2);
-            }
+        signInButton.setOnClickListener(view -> {
+            String email2 = email.getText().toString();
+            String password2 = password.getText().toString();
+            signIn(email2, password2);
         });
 
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ForgotPassword.class);
-                startActivity(intent);
-            }
+        textView.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, ForgotPassword.class);
+            startActivity(intent);
         });
     }
 
@@ -79,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         if (task.isSuccessful()) {
                             // Inicio de sesión exitoso, redirigir a la actividad de nivel seleccionado
-                            FirebaseUser user = mAuth.getCurrentUser();
                             Intent intent = new Intent(MainActivity.this, SelectLevelActivity.class);
                             startActivity(intent);
                             finish();
