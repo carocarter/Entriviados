@@ -48,7 +48,10 @@
             android:layout_height="100dp"
             android:id="@+id/profileImg"
             android:layout_marginTop="70dp"
-            android:src=""
+            android:src="@drawable/ic_person"
+            app:civ_border_color="@color/emphasise"
+            app:civ_border_width="1dp"
+            app:civ_shadow="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
