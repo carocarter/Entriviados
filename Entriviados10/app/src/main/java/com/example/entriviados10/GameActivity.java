@@ -73,20 +73,6 @@ public class GameActivity extends AppCompatActivity {
             score = intent.getIntExtra("score", 0);
             level = intent.getStringExtra("level");
 
-            if (questionIndex == 0){
-                splashGameBg.setVisibility(View.VISIBLE);
-                splashGameAnim.setVisibility(View.VISIBLE);
-                drawable.start();
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        splashGameBg.setVisibility(View.GONE);
-                        splashGameAnim.setVisibility(View.GONE);
-                    }
-                }, 3700);
-            }
-
             TextView textView = findViewById(R.id.textView);
             TextView scoreTextView = findViewById(R.id.scoreTextView);
 
@@ -127,7 +113,23 @@ public class GameActivity extends AppCompatActivity {
                     }
                 });
             }
-            startTimer();
+
+            if (questionIndex == 0){
+                splashGameBg.setVisibility(View.VISIBLE);
+                splashGameAnim.setVisibility(View.VISIBLE);
+                drawable.start();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        splashGameBg.setVisibility(View.GONE);
+                        splashGameAnim.setVisibility(View.GONE);
+                        startTimer();
+                    }
+                }, 3700);
+            } else {
+                startTimer();
+            }
 
             //If the user press the back button during the game
             OnBackPressedDispatcher dispatcher = getOnBackPressedDispatcher();
