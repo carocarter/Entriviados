@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contenido"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,11 +14,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#00FFFFFF"
+        android:contentDescription="Profile button"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/profile"
-        android:contentDescription="Profile button"/>
+        app:srcCompat="@drawable/profile" />
 
     <ImageButton
         android:id="@+id/imageButton2"
@@ -26,10 +27,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="#00FFFFFF"
+        android:contentDescription="Chat button"
         app:layout_constraintEnd_toStartOf="@+id/profileButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/stat_notify_chat"
-        android:contentDescription="Chat button"/>
+        app:srcCompat="@android:drawable/stat_notify_chat" />
 
     <ImageButton
         android:id="@+id/rankingButton"
@@ -38,11 +39,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="#00FFFFFF"
+        android:contentDescription="Podium button"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toStartOf="@+id/imageButton2"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/competencia"
-        android:contentDescription="Podium button"/>
+        app:srcCompat="@drawable/competencia" />
 
     <ImageButton
         android:id="@+id/mutebutton"
@@ -129,11 +130,11 @@
         android:layout_height="0dp"
         android:layout_marginTop="-24dp"
         android:background="@drawable/rectangle_primary"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scoreTextView"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toTopOf="@+id/scoreTextView" />
 
     <TextView
         android:id="@+id/scoreTextView"
@@ -146,10 +147,42 @@
         android:textColor="@color/white"
         android:textSize="21sp"
         android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/loadingBg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/rectangle_bg"
+        android:elevation="10dp"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/loadingIcon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        app:srcCompat="@drawable/loading_icon"
+        android:contentDescription="Loader"
+        android:elevation="12dp"
+        android:visibility="gone"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

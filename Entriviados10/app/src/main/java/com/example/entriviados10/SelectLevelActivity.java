@@ -48,6 +48,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
 
     Button buttonEasy, buttonMedium, buttonHard;
     ImageButton profileButton, rankingButton, muteButton;
+    ImageView loadingBg, loadingIcon;
     SharedPreferences sharedPreferences;
     MediaPlayer mediaPlayer;
     private Boolean isMusicPlaying = false;
@@ -120,6 +121,9 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
                         Toast.makeText(this, "Error: unable to retrieve score", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        loadingBg = findViewById(R.id.loadingBg);
+        loadingIcon = findViewById(R.id.loadingIcon);
     }
 
     //Show or not show the score
@@ -171,8 +175,8 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
                     intent.putExtra("questions", questions);
                     intent.putExtra("questionIndex", 0);
                     intent.putExtra("score", 0);
+                    intent.putExtra("level", difficulty);
                     startActivity(intent);
-                    finish();
                 } else {
                     //Error message
                     runOnUiThread(() -> {
@@ -210,9 +214,9 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
     }
 
     private void showLoadingAnimation(){
-        setContentView(R.layout.activity_loading);
-        ImageView imageView = findViewById(R.id.loaderImageView);
-        ObjectAnimator rotation = ObjectAnimator.ofFloat(imageView, "rotation", 0f, 360f);
+        loadingBg.setVisibility(View.VISIBLE);
+        loadingIcon.setVisibility(View.VISIBLE);
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(loadingIcon, "rotation", 0f, 360f);
         rotation.setDuration(2000); // Adjust duration as needed
         rotation.setRepeatCount(ObjectAnimator.INFINITE);
         rotation.setInterpolator(new LinearInterpolator());
@@ -220,7 +224,15 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
     }
 
     private void dismissLoadingAnimation() {
-        setContentView(R.layout.level_select);
+        loadingIcon.setVisibility(View.GONE);
+        loadingBg.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadingBg.setVisibility(View.GONE);
+        loadingIcon.setVisibility(View.GONE);
     }
 
     @Override

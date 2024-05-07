@@ -4,18 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
-import android.view.KeyEvent;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +35,7 @@ public class GameActivity extends AppCompatActivity {
     private Button[] buttons;
     private Button correctButton;
     private ConstraintLayout constraintLayout;
-    private ImageView imageView;
+    private ImageView imageView, splashGameBg, splashGameAnim;
     private ProgressBar progressBar;
     private int progress;
     private CountDownTimer timer;
@@ -44,6 +45,7 @@ public class GameActivity extends AppCompatActivity {
     private CountDownTimer delayTimer;
     private long delay = 0;
     private int score;
+    private String level;
 
     private MediaPlayer correctSound, wrongSound;
 
@@ -57,6 +59,9 @@ public class GameActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         constraintLayout = findViewById(R.id.constraintlayout);
         imageView = findViewById(R.id.imageView3);
+        splashGameAnim = findViewById(R.id.splashGameAnim);
+        splashGameBg = findViewById(R.id.splashGameBg);
+        AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) splashGameAnim.getDrawable();
         correctSound = MediaPlayer.create(this,R.raw.correct);
         wrongSound = MediaPlayer.create(this, R.raw.error);
 
@@ -66,6 +71,21 @@ public class GameActivity extends AppCompatActivity {
             questions = (Question[]) intent.getSerializableExtra("questions");
             questionIndex = intent.getIntExtra("questionIndex", 0);
             score = intent.getIntExtra("score", 0);
+            level = intent.getStringExtra("level");
+
+            if (questionIndex == 0){
+                splashGameBg.setVisibility(View.VISIBLE);
+                splashGameAnim.setVisibility(View.VISIBLE);
+                drawable.start();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        splashGameBg.setVisibility(View.GONE);
+                        splashGameAnim.setVisibility(View.GONE);
+                    }
+                }, 3700);
+            }
 
             TextView textView = findViewById(R.id.textView);
             TextView scoreTextView = findViewById(R.id.scoreTextView);
@@ -108,6 +128,28 @@ public class GameActivity extends AppCompatActivity {
                 });
             }
             startTimer();
+
+            //If the user press the back button during the game
+            OnBackPressedDispatcher dispatcher = getOnBackPressedDispatcher();
+            dispatcher.addCallback(this, new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    myBackPressedHandler();
+                }
+            });
+        }
+    }
+
+    private double getScoreMultiplier(String level) {
+        switch (level) {
+            case "easy":
+                return 1.0;
+            case "medium":
+                return 1.25;
+            case "hard":
+                return 1.5;
+            default:
+                return 1.0;
         }
     }
 
@@ -139,9 +181,11 @@ public class GameActivity extends AppCompatActivity {
     private void handleButtonClick(int clickedButtonIndex) {
         Button clicked = buttons[clickedButtonIndex];
 
+        double multiplier = getScoreMultiplier(level);
+
         //Color the clicked button
         if (clickedButtonIndex == correctButtonIndex) {
-            score += (int) Math.ceil((double) progress / 10);
+            score += (int) Math.ceil((double) progress / 10 * multiplier);
             clicked.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(GameActivity.this, R.color.green)));
             constraintLayout.setBackgroundColor(ContextCompat.getColor(GameActivity.this, R.color.background_correct));
             imageView.setBackground(getDrawable(R.drawable.correct_bg));
@@ -166,6 +210,7 @@ public class GameActivity extends AppCompatActivity {
             intent.putExtra("questions", questions);
             intent.putExtra("questionIndex", questionIndex);
             intent.putExtra("score", score);
+            intent.putExtra("level", level);
         } else {
             intent = new Intent(GameActivity.this, ScoreActivity.class);
             intent.putExtra("score", score);
@@ -200,49 +245,42 @@ public class GameActivity extends AppCompatActivity {
     }
 
     //If the user press the back button during the game
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-            if (delay > 0){
-                //Stop the delay timer
-                delayTimer.cancel();
-            }
-
-            //Stop the timer and store the remaining time
-            if (timerRunning && timer != null) {
-                timer.cancel();
-                remainingTime = progress * (totalTime / 100);
-                timerRunning = false;
-            }
-
-            //Alert that the progress will be lost
-            new AlertDialog.Builder(this)
-                    .setTitle("Confirmation")
-                    .setMessage("Are you sure you want to go back? Your progress will be lost.")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            //User clicked OK button, finishing the activity
-                            Intent intent = new Intent(GameActivity.this, SelectLevelActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            //User clicked Cancel button, resuming the timer
-                            if (!timerRunning && delay == 0) {
-                                startTimer(remainingTime);
-                                timerRunning = true;
-                            }
-                            if(delay > 0) {
-                                timeBetweenQuestions(delay);
-                            }
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-            return true;
+    public void myBackPressedHandler(){
+        if (delay > 0){
+            //Stop the delay timer
+            delayTimer.cancel();
         }
-        return super.onKeyDown(keyCode, event);
+
+        //Stop the timer and store the remaining time
+        if (timerRunning && timer != null) {
+            timer.cancel();
+            remainingTime = progress * (totalTime / 100);
+            timerRunning = false;
+        }
+
+        //Alert that the progress will be lost
+        new AlertDialog.Builder(this)
+                .setTitle("Confirmation")
+                .setMessage("Are you sure you want to go back? Your progress will be lost.")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //User clicked OK button, finishing the activity
+                        finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //User clicked Cancel button, resuming the timer
+                        if (!timerRunning && delay == 0) {
+                            startTimer(remainingTime);
+                            timerRunning = true;
+                        }
+                        if(delay > 0) {
+                            timeBetweenQuestions(delay);
+                        }
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }
