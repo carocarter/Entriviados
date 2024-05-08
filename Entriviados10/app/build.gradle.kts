@@ -54,6 +54,8 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging:23.4.1")
     implementation("androidx.compose.animation:animation-graphics-android:1.6.7")
     implementation("androidx.core:core-animation:1.0.0")
+    implementation("com.mikhaellopez:circularimageview:4.3.1")
+    implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha13"); ("androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha13")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

@@ -131,6 +131,7 @@ public class RegisterActivity extends AppCompatActivity {
         Map<String, Object> usuario = new HashMap<>();
         usuario.put("nombre", name);
         usuario.put("email", email);
+        usuario.put("password", password);
         usuario.put("score", 0);
 
         usuariosRef.add(usuario)

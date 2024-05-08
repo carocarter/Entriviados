@@ -41,11 +41,7 @@ public class ScoreActivity extends AppCompatActivity {
         //Retrieve old score and update it with the new score
         updateScore();
 
-        playAgain.setOnClickListener(view -> {
-            Intent intent1 = new Intent(ScoreActivity.this, SelectLevelActivity.class);
-            startActivity(intent1);
-            finish();
-        });
+        playAgain.setOnClickListener(v-> finish());
     }
 
     private void updateScore() {

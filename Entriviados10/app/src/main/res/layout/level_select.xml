@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contenido"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,11 +13,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#00FFFFFF"
-        android:contentDescription="Profile button"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/profile" />
+        app:srcCompat="@drawable/profile"
+        android:contentDescription="Profile button"/>
 
     <ImageButton
         android:id="@+id/imageButton2"
@@ -27,10 +26,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="#00FFFFFF"
-        android:contentDescription="Chat button"
         app:layout_constraintEnd_toStartOf="@+id/profileButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/stat_notify_chat" />
+        app:srcCompat="@android:drawable/stat_notify_chat"
+        android:contentDescription="Chat button"/>
 
     <ImageButton
         android:id="@+id/rankingButton"
@@ -39,11 +38,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="#00FFFFFF"
-        android:contentDescription="Podium button"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toStartOf="@+id/imageButton2"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/competencia" />
+        app:srcCompat="@drawable/competencia"
+        android:contentDescription="Podium button"/>
 
     <ImageButton
         android:id="@+id/mutebutton"

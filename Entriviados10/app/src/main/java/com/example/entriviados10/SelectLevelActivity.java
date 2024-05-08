@@ -85,7 +85,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
         });
 
         profileButton.setOnClickListener(view -> {
-            Intent intent = new Intent(SelectLevelActivity.this, PerfilActivity.class);
+            Intent intent = new Intent(SelectLevelActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
 
@@ -116,29 +116,11 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
 
         buttonHard.setOnClickListener(view -> sendGetRequest("hard"));
 
-        //Retrieve score from firebase
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userEmail = mAuth.getCurrentUser().getEmail();
-        db.collection("usuarios")
-                .whereEqualTo("email", userEmail)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Long score = document.getLong("score");
-                            if (score != null) {
-                                updateScoreUI(score.intValue());
-                            }
-                        }
-                    } else {
-                        Toast.makeText(this, "Error: unable to retrieve score", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
         loadingBg = findViewById(R.id.loadingBg);
         loadingIcon = findViewById(R.id.loadingIcon);
     }
+
+
 
     //Show or not show the score
     private void updateScoreUI(int totalScore) {
@@ -253,6 +235,26 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
             mediaPlayer.start();
         }
         updateMuteButtonImage();
+
+        //Retrieve score from firebase
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userEmail = mAuth.getCurrentUser().getEmail();
+        db.collection("usuarios")
+                .whereEqualTo("email", userEmail)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Long score = document.getLong("score");
+                            if (score != null) {
+                                updateScoreUI(score.intValue());
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, "Error: unable to retrieve score", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override
