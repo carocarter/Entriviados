@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
@@ -51,7 +52,13 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
     ImageView loadingBg, loadingIcon;
     SharedPreferences sharedPreferences;
     MediaPlayer mediaPlayer;
+
+    MediaPlayer animationMediaPlayer;
     private Boolean isMusicPlaying = false;
+    private static final String MUSIC_ON_OFF_KEY = "music_on_off";
+    private static final long MUSIC_DELAY = 1000;
+    private Handler musicDelayHandler = new Handler();
+
 
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
@@ -63,12 +70,14 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
         muteButton = findViewById(R.id.mutebutton);
         checkAndRequestNotificationPermission();
 
-        if (!isMusicPlaying) {
-            mediaPlayer = MediaPlayer.create(this, R.raw.former102685);
-            mediaPlayer.setLooping(true);
-            mediaPlayer.start();
-            isMusicPlaying = true;
-        }
+        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
+        isMusicPlaying = sharedPreferences.getBoolean(MUSIC_ON_OFF_KEY, false);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.former102685);
+        mediaPlayer.setLooping(true);
+
+        updateMuteButtonImage();
 
         rankingButton.setOnClickListener(view -> {
             Intent intent = new Intent(SelectLevelActivity.this, RankingActivity.class);
@@ -84,11 +93,16 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
             if (mediaPlayer != null) {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
-                    muteButton.setImageResource(R.drawable.musicoff);
+                    isMusicPlaying = false;
                 } else {
                     mediaPlayer.start();
-                    muteButton.setImageResource(R.drawable.music);
+                    isMusicPlaying = true;
                 }
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean(MUSIC_ON_OFF_KEY, isMusicPlaying);
+                editor.apply();
+
+                updateMuteButtonImage();
             }
         });
 
@@ -216,6 +230,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
     private void showLoadingAnimation(){
         loadingBg.setVisibility(View.VISIBLE);
         loadingIcon.setVisibility(View.VISIBLE);
+        startAnimationMusicWithDelay();
         ObjectAnimator rotation = ObjectAnimator.ofFloat(loadingIcon, "rotation", 0f, 360f);
         rotation.setDuration(2000); // Adjust duration as needed
         rotation.setRepeatCount(ObjectAnimator.INFINITE);
@@ -226,6 +241,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
     private void dismissLoadingAnimation() {
         loadingIcon.setVisibility(View.GONE);
         loadingBg.setVisibility(View.GONE);
+        stopAnimationMusic();
     }
 
     @Override
@@ -233,29 +249,44 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
         super.onResume();
         loadingBg.setVisibility(View.GONE);
         loadingIcon.setVisibility(View.GONE);
+        if (isMusicPlaying && mediaPlayer != null) {
+            mediaPlayer.start();
+        }
+        updateMuteButtonImage();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (mediaPlayer != null) {
-            if (mediaPlayer.isPlaying()) {
-                // Si la música está sonando, muestra el icono de sonido activado
-                muteButton.setImageResource(R.drawable.music);
-            } else {
-                // Si la música está pausada, muestra el icono de sonido desactivado
-                muteButton.setImageResource(R.drawable.musicoff);
-            }
-        }
+        updateMuteButtonImage();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (mediaPlayer != null && isMusicPlaying) {
-            mediaPlayer.pause();
-            isMusicPlaying = false;
+        if (!isChangingConfigurations() && !isFinishing()) {
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+            }
         }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
+        stopAnimationMusic();
     }
 
     // Check or request the permission
@@ -293,4 +324,38 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
                     Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show();
                 }
             });
+
+    private void updateMuteButtonImage() {
+        if (isMusicPlaying) {
+            muteButton.setImageResource(R.drawable.music);
+        } else {
+            muteButton.setImageResource(R.drawable.musicoff);
+        }
+    }
+
+    private void startAnimationMusic() {
+        // Iniciar la música de la animación si está activada
+        if (isMusicPlaying) {
+            animationMediaPlayer = MediaPlayer.create(this, R.raw.beeps);
+            animationMediaPlayer.setLooping(false);
+            animationMediaPlayer.start();
+        }
+    }
+
+
+    private void stopAnimationMusic() {
+        // Detener la música de la animación
+        if (animationMediaPlayer != null) {
+            animationMediaPlayer.stop();
+            animationMediaPlayer.release();
+            animationMediaPlayer = null;
+        }
+    }
+
+    private void startAnimationMusicWithDelay() {
+        // Retardo antes de iniciar la música de la animación
+        musicDelayHandler.postDelayed(() -> {
+            startAnimationMusic(); // Inicia la música de la animación
+        }, MUSIC_DELAY);
+    }
 }
