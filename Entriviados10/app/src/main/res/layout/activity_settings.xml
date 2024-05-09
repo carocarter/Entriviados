@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp">
+
             <TextView
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
@@ -49,20 +50,12 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            app:cardCornerRadius="40dp"
-            app:cardElevation="20dp">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_horizontal"
-                android:padding="24dp"
-                android:background="@drawable/bg_btn">
+                android:padding="24dp">
 
                 <com.mikhaellopez.circularimageview.CircularImageView
                     android:layout_width="100dp"
@@ -78,52 +71,52 @@
                     android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:id="@+id/changePicButton"
                     android:text="Change pic"
                     android:textSize="14sp"
                     android:textColor="@color/emphasise"
-                    android:backgroundTint="@color/white"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/emphasise"/>
+                    android:backgroundTint="@color/background"/>
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:id="@+id/editEmail"
-                    android:background="@drawable/bg_btn"
                     android:layout_marginTop="20dp"
                     android:padding="8dp"
                     android:hint="Email"
                     android:drawableLeft="@drawable/ic_mail"
                     android:drawablePadding="8dp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/white"
+                    android:textColorHint="@android:color/white"
+                    android:backgroundTint="@color/emphasise"/>
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:id="@+id/editUsername"
-                    android:background="@drawable/bg_btn"
                     android:layout_marginTop="20dp"
                     android:padding="8dp"
                     android:hint="Username"
                     android:drawableLeft="@drawable/ic_person"
                     android:drawablePadding="8dp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:backgroundTint="@color/emphasise"/>
+
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:id="@+id/editPassword"
-                    android:background="@drawable/bg_btn"
                     android:layout_marginTop="20dp"
                     android:padding="8dp"
                     android:hint="Password"
                     android:inputType="textPassword"
                     android:drawableLeft="@drawable/ic_lock"
                     android:drawablePadding="8dp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:backgroundTint="@color/emphasise"/>
+
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -140,9 +133,8 @@
                     android:id="@+id/deleteButton"
                     android:textSize="18sp"
                     android:layout_marginTop="10dp"
-                    android:backgroundTint="@color/black"/>
+                    android:backgroundTint="@color/emphasise2"/>
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

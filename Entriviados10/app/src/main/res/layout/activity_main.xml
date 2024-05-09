@@ -26,7 +26,6 @@
             android:orientation="vertical"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:background="@drawable/bg_btn"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginTop="20dp">
@@ -35,27 +34,30 @@
                 android:id="@+id/editTextEmailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/bg_btn"
                 android:layout_marginTop="20dp"
                 android:padding="8dp"
+                android:ems="10"
                 android:hint="Email"
                 android:drawableLeft="@drawable/ic_mail"
                 android:drawablePadding="8dp"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/black"/>
+                android:backgroundTint="@color/white"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"/>
 
             <EditText
                 android:id="@+id/editTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/bg_btn"
                 android:layout_marginTop="20dp"
                 android:padding="8dp"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:hint="Password"
                 android:drawableLeft="@drawable/ic_lock"
                 android:drawablePadding="8dp"
-                android:inputType="textPassword"/>
+                android:backgroundTint="@color/white"
+                android:inputType="textPassword"
+                android:textColorHint="@color/white"/>
 
             <TextView
                 android:id="@+id/textView3"
@@ -63,25 +65,29 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="Password forgotten"
-                android:textColor="@color/emphasise"/>
+                android:textColor="@color/white"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:text="Sign in"
                 android:id="@+id/button"
+                android:background="@drawable/bg_btn"
                 android:textSize="18sp"
-                android:layout_marginTop="30dp"
-                android:backgroundTint="@color/emphasise"/>
+                android:layout_marginTop="100dp"
+                android:backgroundTint="@color/emphasise"
+                android:textColor="@color/white"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:text="Sign up"
                 android:id="@+id/button2"
+                android:background="@drawable/bg_btn"
                 android:textSize="18sp"
                 android:layout_marginTop="10dp"
-                android:backgroundTint="@color/emphasise2"/>
+                android:backgroundTint="@color/emphasise2"
+                android:textColor="@color/white"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

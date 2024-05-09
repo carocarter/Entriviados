@@ -35,7 +35,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 public class ProfileActivity extends AppCompatActivity {
 
     private ImageView profileImg;
-    private TextView profileScore, profileEmail, profileUsername,profilePassword, titleUsername;
+    private TextView profileScore, profileEmail, profileUsername, titleUsername;
     private Button editProfile;
     private Toolbar toolbar;
     private SharedPreferences sharedPreferences;
@@ -51,7 +51,6 @@ public class ProfileActivity extends AppCompatActivity {
         profileImg = findViewById(R.id.profileImg);
         profileEmail = findViewById(R.id.profileEmail);
         profileUsername = findViewById(R.id.profileUsername);
-        profilePassword = findViewById(R.id.profilePassword);
         titleUsername = findViewById(R.id.titleUsername);
         editProfile = findViewById(R.id.editButton);
         toolbar = findViewById(R.id.toolbar3);
@@ -102,9 +101,6 @@ public class ProfileActivity extends AppCompatActivity {
                                 titleUsername.setText(name);
                                 profileUsername.setText(name);
                             }
-                            if (password != null) {
-                                profilePassword.setText(password);
-                            }
                         }
                     } else {
                         Toast.makeText(this, "Error: unable to retrieve score", Toast.LENGTH_SHORT).show();
@@ -126,13 +122,11 @@ public class ProfileActivity extends AppCompatActivity {
                     //Img missing
                     String usernameFromDB = snapshot.child(userUsername).child("nombre").getValue(String.class);
                     String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
-                    String passwordFromDB = snapshot.child(userUsername).child("password").getValue(String.class);
 
                     Intent intent = new Intent(ProfileActivity.this, SettingsActivity.class);
                     //Img missing
                     intent.putExtra("nombre", usernameFromDB);
                     intent.putExtra("email", emailFromDB);
-                    intent.putExtra("password", passwordFromDB);
 
                     startActivity(intent);
                 }

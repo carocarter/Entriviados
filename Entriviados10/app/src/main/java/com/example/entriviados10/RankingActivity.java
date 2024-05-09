@@ -53,13 +53,14 @@ public class RankingActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         List<com.example.entriviados10.User> userList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Integer picture = document.getLong("photoURL") != null ? document.getLong("photoURL").intValue() : null;
+                            String imageURL = String.valueOf(document.getLong("photoURL") != null ? document.getLong("photoURL") : null);
                             String name = document.getString("nombre");
+                            String password = document.getString("password");
                             Integer score = document.getLong("score") != null ? document.getLong("score").intValue() : null;
 
                             //Check if any of the required values are null before adding to the list
-                            if (picture != null && name != null && score != null) {
-                                userList.add(new User(picture, name, score));
+                            if (imageURL != null && name != null && score != null) {
+                                userList.add(new User(imageURL, name, password, score));
                             }
                         }
                         UserAdapter adapter = new UserAdapter(userList);

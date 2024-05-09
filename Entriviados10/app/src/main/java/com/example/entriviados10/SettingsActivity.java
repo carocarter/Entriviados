@@ -28,7 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private SharedPreferences sharedPreferences;
     private EditText editUsername, editEmail, editPassword;
-    Button saveButton, deleteButton;
+    Button saveButton, deleteButton, changePicButton;
     String usernameUser, emailUser, passwordUser;
     DatabaseReference reference;
 
@@ -39,7 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         toolbar = findViewById(R.id.toolbar3);
-        //Img missing
+        changePicButton = findViewById(R.id.changePicButton);
         editUsername = findViewById(R.id.editUsername);
         editEmail = findViewById(R.id.editEmail);
         editPassword = findViewById(R.id.editPassword);
@@ -68,45 +68,54 @@ public class SettingsActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(SettingsActivity.this, "No changes found", Toast.LENGTH_SHORT).show();
                 }
-
-                deleteButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        confirmDeleteAccount();
-                    }
-                });
-            }
-
-            private boolean isEmailChanged() {
-                if (!emailUser.equals(editEmail.getText().toString())){
-                    reference.child(usernameUser).child("email").setValue(editEmail.getText().toString());
-                    emailUser = editEmail.getText().toString();
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            private boolean isPasswordChanged() {
-                if (!passwordUser.equals(editPassword.getText().toString())){
-                    reference.child(usernameUser).child("password").setValue(editPassword.getText().toString());
-                    passwordUser = editPassword.getText().toString();
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            private boolean isUsernameChanged() {
-                if (!usernameUser.equals(editUsername.getText().toString())) {
-                    reference.child(usernameUser).child("nombre").setValue(editUsername.getText().toString());
-                    usernameUser = editUsername.getText().toString();
-                    return true;
-                } else {
-                    return false;
-                }
             }
         });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDeleteAccount();
+            }
+        });
+
+        changePicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, UploadActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+    private boolean isEmailChanged() {
+        if (!emailUser.equals(editEmail.getText().toString())){
+            reference.child(usernameUser).child("email").setValue(editEmail.getText().toString());
+            emailUser = editEmail.getText().toString();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean isPasswordChanged() {
+        if (!passwordUser.equals(editPassword.getText().toString())){
+            reference.child(usernameUser).child("password").setValue(editPassword.getText().toString());
+            passwordUser = editPassword.getText().toString();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean isUsernameChanged() {
+        if (!usernameUser.equals(editUsername.getText().toString())) {
+            reference.child(usernameUser).child("nombre").setValue(editUsername.getText().toString());
+            usernameUser = editUsername.getText().toString();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void showData() {
@@ -132,34 +141,30 @@ public class SettingsActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
         builder.show();
     }
 
     private void eliminarCuenta() {
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            user.delete()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                // La cuenta se ha eliminado exitosamente.
-                                Toast.makeText(SettingsActivity.this, "Account deleted", Toast.LENGTH_SHORT).show();
-                                // Redirige al usuario a la pantalla de inicio de sesión
-                                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish(); // Termina la actividad actual
-                            } else {
-                                // Ocurrió un error al intentar eliminar la cuenta
-                                Toast.makeText(SettingsActivity.this, "Error deleting account", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+            user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        // La cuenta se ha eliminado exitosamente.
+                        Toast.makeText(SettingsActivity.this, "Account deleted", Toast.LENGTH_SHORT).show();
+                        // Redirige al usuario a la pantalla de inicio de sesión
+                        Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish(); // Termina la actividad actual
+                    } else {
+                        // Ocurrió un error al intentar eliminar la cuenta
+                        Toast.makeText(SettingsActivity.this, "Error deleting account", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
-
 }
