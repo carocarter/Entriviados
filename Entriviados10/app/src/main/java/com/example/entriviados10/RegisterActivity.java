@@ -87,11 +87,11 @@ public class RegisterActivity extends AppCompatActivity {
     private void createAccount(String email, String password) {
 
         if (!isValidEmail(email)) {
-            Toast.makeText(this, "Correo electrónico inválido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Email not valid", Toast.LENGTH_SHORT).show();
             return;
         }
         if (!isValidPassword(password)) {
-            Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Password must have at least 6 characters", Toast.LENGTH_SHORT).show();
             return;
         }
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -123,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         String repetirContraseña = repeatPassword.getText().toString();
         if (!password.equals(repetirContraseña)) {
-            Toast.makeText(this, "La contraseña no coincide", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Password mismatch", Toast.LENGTH_SHORT).show();
             return;
         }
         CollectionReference usuariosRef = db.collection("usuarios");
@@ -133,13 +133,14 @@ public class RegisterActivity extends AppCompatActivity {
         usuario.put("email", email);
         usuario.put("password", password);
         usuario.put("score", 0);
+        //usuario.put("image", );
 
         usuariosRef.add(usuario)
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(this, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "User registered", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error al registrar usuario: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
     private boolean isValidEmail(String email) {

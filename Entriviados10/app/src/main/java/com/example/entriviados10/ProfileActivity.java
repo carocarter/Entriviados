@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,17 +31,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private ImageView profileImg;
     private TextView profileScore, profileEmail, profileUsername, titleUsername;
     private Button editProfile;
+    private ImageButton imageLogout;
     private Toolbar toolbar;
-    private SharedPreferences sharedPreferences;
-    private ImageButton logoutButton;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    final private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("usuarios");
+    String userEmail = mAuth.getCurrentUser().getEmail();
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -47,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        titleUsername = findViewById(R.id.titleUsername);
         profileScore = findViewById(R.id.profileScore);
         profileImg = findViewById(R.id.profileImg);
         profileEmail = findViewById(R.id.profileEmail);
@@ -54,6 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
         titleUsername = findViewById(R.id.titleUsername);
         editProfile = findViewById(R.id.editButton);
         toolbar = findViewById(R.id.toolbar3);
+        imageLogout = findViewById(R.id.imagelogout);
 
         setSupportActionBar(toolbar);
         showAllUserData();
@@ -61,47 +74,73 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(null);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        // Shows user settings
-        editProfile.setOnClickListener(v -> passUserData());
+        //Shows user settings
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passUserData();
+            }
+        });
+
+        imageLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+
+                // Redirige al usuario a la pantalla de inicio de sesión
+                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish(); // Termina la actividad actual
+            }
+        });
     }
 
     public void showAllUserData() {
-        //Retrieve score from firebase
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userEmail = mAuth.getCurrentUser().getEmail();
-        db.collection("usuarios")
-                .whereEqualTo("email", userEmail)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Long score = document.getLong("score");
-                            String name = document.getString("nombre");
-                            String email = document.getString("email");
-                            if (score != null) {
-                                profileScore.setText(String.valueOf(score.intValue()));
-                            }
-                            if (email != null) {
-                                profileEmail.setText(email);
-                            }
-                            if (name != null) {
-                                titleUsername.setText(name);
-                                profileUsername.setText(name);
-                            }
+        //Retrieve data from Firebase
+        databaseReference.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        String name = dataSnapshot.child("nombre").getValue(String.class);
+                        String score = dataSnapshot.child("score").getValue(String.class);
+                        String password = dataSnapshot.child("password").getValue(String.class);
+                        String email = dataSnapshot.child("email").getValue(String.class);
+                        String imageURL = dataSnapshot.child("photoURL").getValue(String.class);
+
+                        if (name != null) {
+                            titleUsername.setText(name);
+                            profileUsername.setText(name);
                         }
-                    } else {
-                        Toast.makeText(this, "Error: unable to retrieve score", Toast.LENGTH_SHORT).show();
+
+                        if (score != null) {
+                            profileScore.setText(score);
+                        }
+
+                        if (email != null) {
+                            profileEmail.setText(email);
+                        }
+
+                        if (imageURL != null) {
+                            Glide.with(ProfileActivity.this).load(imageURL).into(profileImg);
+                        }
                     }
-                });
+                } else {
+                    Toast.makeText(ProfileActivity.this, "Error: no data available", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void passUserData() {
         String userUsername = profileUsername.getText().toString().trim();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("usuarios");
-        Query checkUserDatabase = reference.orderByChild("nombre").equalTo(userUsername);
-
+        Query checkUserDatabase = databaseReference.orderByChild("nombre").equalTo(userUsername);
         checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

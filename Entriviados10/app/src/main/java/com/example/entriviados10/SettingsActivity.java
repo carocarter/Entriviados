@@ -45,13 +45,10 @@ import java.util.HashMap;
 
 public class SettingsActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private SharedPreferences sharedPreferences;
     private EditText editUsername, editEmail, editPassword;
     Button saveButton, deleteButton, changePicButton;
     private ImageView editImage;
     String usernameUser, emailUser, passwordUser;
-    DatabaseReference reference;
-    ProgressBar progressBar;
     private Uri imageURL;
     private String myUri = "";
     final private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Usuario");
@@ -75,8 +72,6 @@ public class SettingsActivity extends AppCompatActivity {
         deleteButton = findViewById(R.id.deleteButton);
 
         mAuth = FirebaseAuth.getInstance();
-
-        reference = FirebaseDatabase.getInstance().getReference("usuarios");
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
@@ -131,7 +126,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private boolean isEmailChanged() {
         if (!emailUser.equals(editEmail.getText().toString())){
-            reference.child(usernameUser).child("email").setValue(editEmail.getText().toString());
+            databaseReference.child(usernameUser).child("email").setValue(editEmail.getText().toString());
             emailUser = editEmail.getText().toString();
             return true;
         } else {
@@ -141,7 +136,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private boolean isPasswordChanged() {
         if (!passwordUser.equals(editPassword.getText().toString())){
-            reference.child(usernameUser).child("password").setValue(editPassword.getText().toString());
+            databaseReference.child(usernameUser).child("password").setValue(editPassword.getText().toString());
             passwordUser = editPassword.getText().toString();
             return true;
         } else {
@@ -151,7 +146,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private boolean isUsernameChanged() {
         if (!usernameUser.equals(editUsername.getText().toString())) {
-            reference.child(usernameUser).child("nombre").setValue(editUsername.getText().toString());
+            databaseReference.child(usernameUser).child("nombre").setValue(editUsername.getText().toString());
             usernameUser = editUsername.getText().toString();
             return true;
         } else {
