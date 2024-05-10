@@ -1,13 +1,17 @@
 package com.example.entriviados10;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,20 +21,43 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.bumptech.glide.Glide;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.HashMap;
 
 public class SettingsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private SharedPreferences sharedPreferences;
     private EditText editUsername, editEmail, editPassword;
     Button saveButton, deleteButton, changePicButton;
+    private ImageView editImage;
     String usernameUser, emailUser, passwordUser;
     DatabaseReference reference;
+    ProgressBar progressBar;
+    private Uri imageURL;
+    private String myUri = "";
+    final private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Usuario");
+    private FirebaseAuth mAuth;
+    private StorageTask uploadTask;
+    final private StorageReference storageReference = FirebaseStorage.getInstance().getReference("Image");
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -40,11 +67,14 @@ public class SettingsActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar3);
         changePicButton = findViewById(R.id.changePicButton);
+        editImage = findViewById(R.id.editProfileImg);
         editUsername = findViewById(R.id.editUsername);
         editEmail = findViewById(R.id.editEmail);
         editPassword = findViewById(R.id.editPassword);
         saveButton = findViewById(R.id.saveButton);
         deleteButton = findViewById(R.id.deleteButton);
+
+        mAuth = FirebaseAuth.getInstance();
 
         reference = FirebaseDatabase.getInstance().getReference("usuarios");
 
@@ -63,7 +93,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //img is missing
-                if (isUsernameChanged() || isPasswordChanged() || isEmailChanged()) {
+                if (isImageChanged() || isUsernameChanged() || isPasswordChanged() || isEmailChanged()) {
                     Toast.makeText(SettingsActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(SettingsActivity.this, "No changes found", Toast.LENGTH_SHORT).show();
@@ -81,11 +111,22 @@ public class SettingsActivity extends AppCompatActivity {
         changePicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingsActivity.this, UploadActivity.class);
-                startActivity(intent);
-                finish();
+            uploadProfileImage();
             }
         });
+
+        getUserInfo();
+    }
+
+    private boolean isImageChanged() {
+        if (imageURL != null && !myUri.equals(imageURL.toString())) {
+            HashMap<String, Object> userMap = new HashMap<>();
+            userMap.put("image", imageURL.toString());
+            databaseReference.child(mAuth.getCurrentUser().getUid()).updateChildren(userMap);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private boolean isEmailChanged() {
@@ -120,12 +161,48 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void showData() {
         Intent intent = getIntent();
+
         usernameUser = intent.getStringExtra("nombre");
         emailUser = intent.getStringExtra("email");
         passwordUser = intent.getStringExtra("password");
         editUsername.setText(usernameUser);
         editEmail.setText(emailUser);
         editPassword.setText(passwordUser);
+    }
+
+    private void getUserInfo() {
+        databaseReference.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+                    if (snapshot.hasChild("image")) {
+                        String image = snapshot.child("image").getValue().toString();
+                        storageReference.child(mAuth.getCurrentUser().getUid() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                downloadImageWithGlide(uri);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(SettingsActivity.this, "Error loading image", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(SettingsActivity.this, "Error loading image", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void downloadImageWithGlide(Uri uri) {
+        Glide.with(this)
+                .load(imageURL)
+                .into(editImage);
     }
 
     public void confirmDeleteAccount() {
@@ -165,6 +242,46 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 }
             });
+        }
+    }
+
+    private void uploadProfileImage() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please wait");
+        progressDialog.show();
+
+        if (imageURL != null) {
+            final StorageReference fileRef = storageReference
+                    .child(mAuth.getCurrentUser().getUid() + ".jpg");
+
+            uploadTask = fileRef.putFile(imageURL);
+            uploadTask.continueWithTask(new Continuation() {
+                @Override
+                public Object then(@NonNull Task task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return fileRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUrl = task.getResult();
+                        myUri = downloadUrl.toString();
+
+                        HashMap<String, Object> userMap = new HashMap<>();
+                        userMap.put("image", myUri);
+
+                        databaseReference.child(mAuth.getCurrentUser().getUid()).updateChildren(userMap);
+
+                        progressDialog.dismiss();
+                    }
+                }
+            });
+        } else {
+            progressDialog.dismiss();
+            Toast.makeText(this, "Image not selected", Toast.LENGTH_SHORT).show();
         }
     }
 }

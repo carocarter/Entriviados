@@ -1,5 +1,6 @@
 package com.example.entriviados10;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,15 +9,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
+    private Context context;
     private List<com.example.entriviados10.User> userList;
 
     public UserAdapter(List<com.example.entriviados10.User> userList) {
         this.userList = userList;
+        this.context = context;
     }
 
     @NonNull
@@ -30,7 +34,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = userList.get(position);
 
-        holder.userPicture.setImageResource(user.getPicture());
+        Glide.with(context).load(user.getImageURL()).into(holder.userPicture);
         holder.userName.setText(user.getName());
         holder.userScore.setText(String.valueOf(user.getScore()));
     }

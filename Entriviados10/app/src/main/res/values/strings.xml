@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Entriviados1.0</string>
+    <string name="app_name">Entriviados</string>
     <string-array name="screens">
         <item>Perfil</item>
         <item>Mensajes</item>

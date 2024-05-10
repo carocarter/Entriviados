@@ -54,7 +54,6 @@ public class ProfileActivity extends AppCompatActivity {
         titleUsername = findViewById(R.id.titleUsername);
         editProfile = findViewById(R.id.editButton);
         toolbar = findViewById(R.id.toolbar3);
-        logoutButton = findViewById(R.id.imagelogout);
 
         setSupportActionBar(toolbar);
         showAllUserData();
@@ -64,16 +63,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Shows user settings
         editProfile.setOnClickListener(v -> passUserData());
-
-        logoutButton.setOnClickListener(v -> {
-            // Cierra la sesión del usuario
-            FirebaseAuth.getInstance().signOut();
-
-            // Redirige al usuario a la pantalla de inicio de sesión
-            Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish(); // Termina la actividad actual
-        });
     }
 
     public void showAllUserData() {
@@ -90,7 +79,6 @@ public class ProfileActivity extends AppCompatActivity {
                             Long score = document.getLong("score");
                             String name = document.getString("nombre");
                             String email = document.getString("email");
-                            String password = document.getString("password");
                             if (score != null) {
                                 profileScore.setText(String.valueOf(score.intValue()));
                             }
@@ -136,38 +124,5 @@ public class ProfileActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
-        /*
-        public void confirmDeleteAccount(View view) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Eliminar cuenta");
-            builder.setMessage("¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.");
-            builder.setPositiveButton("Sí", (dialog, which) -> eliminarCuenta());
-            builder.setNegativeButton("Cancelar", (dialog, which) -> {
-
-            });
-            builder.show();
-        }
-
-        private void eliminarCuenta() {
-
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null) {
-                user.delete()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                // La cuenta se ha eliminado exitosamente.
-                                Toast.makeText(PerfilActivity.this, "Cuenta eliminada", Toast.LENGTH_SHORT).show();
-                                // Redirige al usuario a la pantalla de inicio de sesión
-                                Intent intent = new Intent(PerfilActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish(); // Termina la actividad actual
-                            } else {
-                                // Ocurrió un error al intentar eliminar la cuenta
-                                Toast.makeText(PerfilActivity.this, "Error al eliminar la cuenta", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }*/
-
     }
 }
