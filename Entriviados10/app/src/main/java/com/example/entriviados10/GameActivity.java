@@ -3,6 +3,7 @@ package com.example.entriviados10;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.media.MediaPlayer;
@@ -46,8 +47,10 @@ public class GameActivity extends AppCompatActivity {
     private long delay = 0;
     private int score;
     private String level;
-
     private MediaPlayer correctSound, wrongSound;
+    private static final String MUSIC_ON_OFF_KEY = "music_on_off";
+    SharedPreferences sharedPreferences;
+    private boolean isMusicPlaying = false;
 
 
 
@@ -62,6 +65,10 @@ public class GameActivity extends AppCompatActivity {
         splashGameAnim = findViewById(R.id.splashGameAnim);
         splashGameBg = findViewById(R.id.splashGameBg);
         AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) splashGameAnim.getDrawable();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        isMusicPlaying = sharedPreferences.getBoolean(MUSIC_ON_OFF_KEY, false);
+
         correctSound = MediaPlayer.create(this,R.raw.correct);
         wrongSound = MediaPlayer.create(this, R.raw.error);
 
@@ -191,13 +198,17 @@ public class GameActivity extends AppCompatActivity {
             clicked.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(GameActivity.this, R.color.green)));
             constraintLayout.setBackgroundColor(ContextCompat.getColor(GameActivity.this, R.color.background_correct));
             imageView.setBackground(getDrawable(R.drawable.correct_bg));
-            correctSound.start();
+            if(isMusicPlaying) {
+                correctSound.start();
+            }
         } else {
             clicked.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(GameActivity.this, R.color.button_error)));
             correctButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(GameActivity.this, R.color.green)));
             constraintLayout.setBackgroundColor(ContextCompat.getColor(GameActivity.this, R.color.background_error));
             imageView.setBackground(getDrawable(R.drawable.error_bg));
-            wrongSound.start();
+            if(isMusicPlaying){
+                wrongSound.start();
+            }
         }
         timer.cancel();
         timerRunning = false;
