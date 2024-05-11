@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -33,6 +36,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
@@ -48,13 +54,9 @@ public class SettingsActivity extends AppCompatActivity {
     private EditText editUsername, editEmail, editPassword;
     Button saveButton, deleteButton, changePicButton;
     private ImageView editImage;
-    String usernameUser, emailUser, passwordUser;
-    private Uri imageURL;
-    private String myUri = "";
-    final private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Usuario");
     private FirebaseAuth mAuth;
-    private StorageTask uploadTask;
-    final private StorageReference storageReference = FirebaseStorage.getInstance().getReference("Image");
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private ActivityResultLauncher<String> galleryLauncher;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -62,7 +64,6 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        toolbar = findViewById(R.id.toolbar3);
         changePicButton = findViewById(R.id.changePicButton);
         editImage = findViewById(R.id.editProfileImg);
         editUsername = findViewById(R.id.editUsername);
@@ -73,6 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        toolbar = findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -82,17 +84,20 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        showData();
+        galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri o) {
+                        if (o != null) {
+                            Glide.with(SettingsActivity.this).load(o).into(editImage);
+                        }
+                    }
+                });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //img is missing
-                if (isImageChanged() || isUsernameChanged() || isPasswordChanged() || isEmailChanged()) {
-                    Toast.makeText(SettingsActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(SettingsActivity.this, "No changes found", Toast.LENGTH_SHORT).show();
-                }
+                saveChanges();
             }
         });
 
@@ -106,98 +111,95 @@ public class SettingsActivity extends AppCompatActivity {
         changePicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            uploadProfileImage();
+            changeProfilePicture();
             }
         });
 
         getUserInfo();
     }
 
-    private boolean isImageChanged() {
-        if (imageURL != null && !myUri.equals(imageURL.toString())) {
-            HashMap<String, Object> userMap = new HashMap<>();
-            userMap.put("image", imageURL.toString());
-            databaseReference.child(mAuth.getCurrentUser().getUid()).updateChildren(userMap);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean isEmailChanged() {
-        if (!emailUser.equals(editEmail.getText().toString())){
-            databaseReference.child(usernameUser).child("email").setValue(editEmail.getText().toString());
-            emailUser = editEmail.getText().toString();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean isPasswordChanged() {
-        if (!passwordUser.equals(editPassword.getText().toString())){
-            databaseReference.child(usernameUser).child("password").setValue(editPassword.getText().toString());
-            passwordUser = editPassword.getText().toString();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean isUsernameChanged() {
-        if (!usernameUser.equals(editUsername.getText().toString())) {
-            databaseReference.child(usernameUser).child("nombre").setValue(editUsername.getText().toString());
-            usernameUser = editUsername.getText().toString();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void showData() {
-        Intent intent = getIntent();
-
-        usernameUser = intent.getStringExtra("nombre");
-        emailUser = intent.getStringExtra("email");
-        passwordUser = intent.getStringExtra("password");
-        editUsername.setText(usernameUser);
-        editEmail.setText(emailUser);
-        editPassword.setText(passwordUser);
+    private void changeProfilePicture() {
+        galleryLauncher.launch("image/*");
     }
 
     private void getUserInfo() {
-        databaseReference.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
-                    if (snapshot.hasChild("image")) {
-                        String image = snapshot.child("image").getValue().toString();
-                        storageReference.child(mAuth.getCurrentUser().getUid() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                downloadImageWithGlide(uri);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(SettingsActivity.this, "Error loading image", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }
-            }
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            String userUid = user.getUid();
+            firebaseFirestore.collection("usuarios").whereEqualTo("email", userUid).get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            if (!queryDocumentSnapshots.isEmpty()) {
+                                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                                String email = documentSnapshot.getString("email");
+                                String username = documentSnapshot.getString("username");
+                                String password = documentSnapshot.getString("password");
+                                String imageUrl = documentSnapshot.getString("photoURL");
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(SettingsActivity.this, "Error loading image", Toast.LENGTH_SHORT).show();
-            }
-        });
+                                editEmail.setText(email);
+                                editUsername.setText(username);
+                                editPassword.setText(password);
+
+                                if (imageUrl != null && !imageUrl.isEmpty()) {
+                                    Glide.with(SettingsActivity.this)
+                                            .load(imageUrl)
+                                            .into(editImage);
+                                }
+                            } else {
+                                Toast.makeText(SettingsActivity.this, "No user data", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(SettingsActivity.this, "Error retrieving data", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
-    private void downloadImageWithGlide(Uri uri) {
-        Glide.with(this)
-                .load(imageURL)
-                .into(editImage);
+    private void saveChanges() {
+        //Set new values for data info
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            String userUid = user.getUid();
+            String newEmail = editEmail.getText().toString();
+            String newUsername = editUsername.getText().toString();
+            String newPassword = editPassword.getText().toString();
+
+            firebaseFirestore.collection("usuarios").document(userUid)
+                    .update("email", newEmail, "nombre", newUsername)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(SettingsActivity.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(SettingsActivity.this, "Failed to save changes", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            if (!newPassword.isEmpty()) {
+                user.updatePassword(newPassword)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(SettingsActivity.this, "Password updated successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(SettingsActivity.this, "Failed to update password", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        }
     }
 
     public void confirmDeleteAccount() {
@@ -237,46 +239,6 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 }
             });
-        }
-    }
-
-    private void uploadProfileImage() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please wait");
-        progressDialog.show();
-
-        if (imageURL != null) {
-            final StorageReference fileRef = storageReference
-                    .child(mAuth.getCurrentUser().getUid() + ".jpg");
-
-            uploadTask = fileRef.putFile(imageURL);
-            uploadTask.continueWithTask(new Continuation() {
-                @Override
-                public Object then(@NonNull Task task) throws Exception {
-                    if (!task.isSuccessful()) {
-                        throw task.getException();
-                    }
-                    return fileRef.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    if (task.isSuccessful()) {
-                        Uri downloadUrl = task.getResult();
-                        myUri = downloadUrl.toString();
-
-                        HashMap<String, Object> userMap = new HashMap<>();
-                        userMap.put("image", myUri);
-
-                        databaseReference.child(mAuth.getCurrentUser().getUid()).updateChildren(userMap);
-
-                        progressDialog.dismiss();
-                    }
-                }
-            });
-        } else {
-            progressDialog.dismiss();
-            Toast.makeText(this, "Image not selected", Toast.LENGTH_SHORT).show();
         }
     }
 }

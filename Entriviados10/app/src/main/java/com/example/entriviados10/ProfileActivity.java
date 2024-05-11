@@ -52,7 +52,6 @@ public class ProfileActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    final private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("usuarios");
     String userEmail = mAuth.getCurrentUser().getEmail();
 
     @SuppressLint("MissingInflatedId")
@@ -93,7 +92,6 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this, SettingsActivity.class);
                 startActivity(intent);
-                //passUserData();
             }
         });
 
@@ -116,87 +114,24 @@ public class ProfileActivity extends AppCompatActivity {
                     .whereEqualTo("email", userEmail).get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                //Img
                                 name = documentSnapshot.getString("nombre");
                                 email = documentSnapshot.getString("email");
                                 Long scoreLong = documentSnapshot.getLong("score");
                                 score = (scoreLong != null) ? scoreLong.intValue() : 0;
+                                String imageURL = documentSnapshot.getString("photoURL");
 
                                 titleUsername.setText(name);
                                 profileUsername.setText(name);
                                 profileScore.setText(String.valueOf(score));
                                 profileEmail.setText(email);
+
+                                if (imageURL != null) {
+                                    Glide.with(this).load(imageURL).into(profileImg);
+                                }
                             }
                         } else {
                             Toast.makeText(this, "Error: unable to retrieve data", Toast.LENGTH_SHORT).show();
                         }
                     });
-
-        /*databaseReference.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        String name = dataSnapshot.child("nombre").getValue(String.class);
-                        String score = dataSnapshot.child("score").getValue(String.class);
-                        String password = dataSnapshot.child("password").getValue(String.class);
-                        String email = dataSnapshot.child("email").getValue(String.class);
-                        String imageURL = dataSnapshot.child("photoURL").getValue(String.class);
-
-                        if (name != null) {
-                            titleUsername.setText(name);
-                            profileUsername.setText(name);
-                        }
-
-                        if (score != null) {
-                            profileScore.setText(score);
-                        }
-
-                        if (email != null) {
-                            profileEmail.setText(email);
-                        }
-
-                        if (imageURL != null) {
-                            Glide.with(ProfileActivity.this).load(imageURL).into(profileImg);
-                        }
-                    }
-                } else {
-                    Toast.makeText(ProfileActivity.this, "Error: no data available", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
     }
-    
-    /*public void passUserData() {
-        String userUsername = profileUsername.getText().toString().trim();
-
-        Query checkUserDatabase = databaseReference.orderByChild("nombre").equalTo(userUsername);
-        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    //int scoreFromDB = (int) snapshot.child(userUsername).child("totalScore").getValue();
-                    //Img missing
-                    String usernameFromDB = snapshot.child(userUsername).child("nombre").getValue(String.class);
-                    String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
-
-                    Intent intent = new Intent(ProfileActivity.this, SettingsActivity.class);
-                    //Img missing
-                    intent.putExtra("nombre", usernameFromDB);
-                    intent.putExtra("email", emailFromDB);
-
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }*/
 }
