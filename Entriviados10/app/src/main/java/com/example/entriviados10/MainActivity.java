@@ -70,8 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
         registerButton = findViewById(R.id.button2);
         signInButton = findViewById(R.id.button);
-        //googleButton = findViewById(R.id.buttonGoogle);
-
         email = findViewById(R.id.editTextEmailAddress);
         password = findViewById(R.id.editTextPassword);
         textView = findViewById(R.id.textView3);

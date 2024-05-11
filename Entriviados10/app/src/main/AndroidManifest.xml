@@ -35,6 +35,7 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".ScoreActivity" />
         <activity android:name=".RankingActivity" />
+        <activity android:name=".SettingsActivity" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/push_icon" />
