@@ -56,6 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
     private ImageView editImage;
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     private ActivityResultLauncher<String> galleryLauncher;
 
     @SuppressLint("MissingInflatedId")
@@ -125,8 +126,8 @@ public class SettingsActivity extends AppCompatActivity {
     private void getUserInfo() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            String userUid = user.getUid();
-            firebaseFirestore.collection("usuarios").whereEqualTo("email", userUid).get()
+            String userEmail = user.getEmail();
+            firebaseFirestore.collection("usuarios").whereEqualTo("email", userEmail).get()
                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -164,12 +165,12 @@ public class SettingsActivity extends AppCompatActivity {
         //Set new values for data info
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            String userUid = user.getUid();
+            String userEmail = user.getEmail();
             String newEmail = editEmail.getText().toString();
             String newUsername = editUsername.getText().toString();
             String newPassword = editPassword.getText().toString();
 
-            firebaseFirestore.collection("usuarios").document(userUid)
+            firebaseFirestore.collection("usuarios").document(userEmail)
                     .update("email", newEmail, "nombre", newUsername)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -200,6 +201,10 @@ public class SettingsActivity extends AppCompatActivity {
                         });
             }
         }
+    }
+
+    private void uploadProfileImage(Uri imageUri) {
+        Glide.with(this).load(imageUri).into(editImage);
     }
 
     public void confirmDeleteAccount() {
