@@ -166,12 +166,11 @@ public class SettingsActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             String userEmail = user.getEmail();
-            String newEmail = editEmail.getText().toString();
             String newUsername = editUsername.getText().toString();
             String newPassword = editPassword.getText().toString();
 
             firebaseFirestore.collection("usuarios").document(userEmail)
-                    .update("email", newEmail, "nombre", newUsername)
+                    .update("nombre", newUsername)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
