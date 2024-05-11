@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -58,6 +59,7 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     private ActivityResultLauncher<String> galleryLauncher;
+    private ImageButton imageLogout;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -72,6 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
         editPassword = findViewById(R.id.editPassword);
         saveButton = findViewById(R.id.saveButton);
         deleteButton = findViewById(R.id.deleteButton);
+        imageLogout = findViewById(R.id.imagelogout);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -117,6 +120,18 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         getUserInfo();
+
+        imageLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+
+                // Redirige al usuario a la pantalla de inicio de sesión
+                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish(); // Termina la actividad actual
+            }
+        });
     }
 
     private void changeProfilePicture() {
@@ -245,4 +260,5 @@ public class SettingsActivity extends AppCompatActivity {
             });
         }
     }
+
 }
