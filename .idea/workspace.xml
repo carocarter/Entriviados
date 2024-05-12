@@ -57,11 +57,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3e69f788-ed52-4987-ab35-215192f32f85" name="Changes" comment="SettingsActivityActivity funcionando">
-      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/RankingActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/RankingActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/UserAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/UserAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/user_item_ranking.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/user_item_ranking.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/RegisterActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/RegisterActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/SettingsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/SettingsActivity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +107,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
