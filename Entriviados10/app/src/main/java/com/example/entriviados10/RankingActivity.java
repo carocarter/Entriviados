@@ -53,9 +53,9 @@ public class RankingActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         List<com.example.entriviados10.User> userList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            String imageURL = String.valueOf(document.getLong("photoURL") != null ? document.getLong("photoURL") : null);
+                            String imageURL = document.getString("photoURL");
                             String name = document.getString("nombre");
-                            String password = document.getString("password");
+                            String password = "";
                             Integer score = document.getLong("score") != null ? document.getLong("score").intValue() : null;
 
                             //Check if any of the required values are null before adding to the list
@@ -63,7 +63,7 @@ public class RankingActivity extends AppCompatActivity {
                                 userList.add(new User(imageURL, name, password, score));
                             }
                         }
-                        UserAdapter adapter = new UserAdapter(userList);
+                        UserAdapter adapter = new UserAdapter(userList, this);
                         recyclerView.setAdapter(adapter);
                     } else {
                         Toast.makeText(this, "Error loading ranking", Toast.LENGTH_SHORT).show();

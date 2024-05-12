@@ -5,11 +5,12 @@
     android:layout_height="wrap_content">
 
     <!-- User Picture -->
-    <ImageView
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:id="@+id/userPicture"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/profile" />
+        android:src="@drawable/ic_person"
+        android:layout_gravity="center"/>
 
     <!-- User Name -->
     <TextView
