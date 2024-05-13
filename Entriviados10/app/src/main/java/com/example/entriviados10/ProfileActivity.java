@@ -70,7 +70,6 @@ public class ProfileActivity extends AppCompatActivity {
         imageLogout = findViewById(R.id.imagelogout);
 
         setSupportActionBar(toolbar);
-        showAllUserData();
 
         getSupportActionBar().setTitle(null);
         toolbar.setNavigationOnClickListener(v -> finish());
@@ -106,6 +105,12 @@ public class ProfileActivity extends AppCompatActivity {
                 finish(); // Termina la actividad actual
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showAllUserData();
     }
 
     public void showAllUserData() {
