@@ -135,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
         usuario.put("email", email);
         usuario.put("password", password);
         usuario.put("score", 0);
-        usuario.put("photoURL", "https://firebasestorage.googleapis.com/v0/b/entriviados-aa084.appspot.com/o/Image%2Fprofile.png?alt=media&token=e58e55f7-7b33-47c7-bdae-875fde968424");
+        usuario.put("photoURL", "https://firebasestorage.googleapis.com/v0/b/entriviados-aa084.appspot.com/o/Image%2Fprofile.png?alt=media&token=38c0c024-ebb4-4019-832f-2329f56ac4fc");
 
         usuariosRef.add(usuario)
                 .addOnSuccessListener(documentReference -> {
