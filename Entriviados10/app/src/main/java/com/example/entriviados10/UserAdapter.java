@@ -55,7 +55,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {
-        public QuestionDetails rankingOrder;
         ImageView userPicture;
         TextView userName, userScore, order;
 

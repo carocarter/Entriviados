@@ -270,16 +270,8 @@ public class SettingsActivity extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                document.getReference().delete()
-                                        .addOnSuccessListener(aVoid -> {
-                                            // User document deleted successfully
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            // Failed to delete user document
-                                        });
+                                document.getReference().delete();
                             }
-                        } else {
-                            // Failed to retrieve user document
                         }
                     });
 

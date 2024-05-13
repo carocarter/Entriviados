@@ -96,18 +96,60 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, errorMessage[1], Toast.LENGTH_SHORT).show();
             return;
         }
+        db.collection("usuarios")
+                .whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (!task.getResult().isEmpty()) {
+                            // Email already exists, show error message
+                            Toast.makeText(this, "Email already exists", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //Email does not exist, check if username exists
+                            checkUsernameExists(email, password);
+                        }
+                    } else {
+                        //Error occurred while checking email existence
+                        Toast.makeText(this, "Server error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void checkUsernameExists(String email, String password) {
+        String username = userName.getText().toString();
+        //Check if username exists in Firestore
+        db.collection("usuarios")
+                .whereEqualTo("nombre", username)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (!task.getResult().isEmpty()) {
+                            // Username already exists, show error message
+                            Toast.makeText(this, "Username already exists", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Username does not exist, proceed with registration
+                            registerUser(email, password);
+                        }
+                    } else {
+                        // Error occurred while checking username existence
+                        Toast.makeText(this, "Server error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void registerUser(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Registro exitoso, actualiza la interfaz de usuario con la información del usuario registrado
+                            // Registration successful
                             Log.d(TAG, "createUserWithEmail: success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //       updateUI(user);
-
+                            // updateUI(user);
+                            saveUser();
                         } else {
-                            // Si falla el registro, muestra un mensaje al usuario
+                            // Registration failed
                             Log.w(TAG, "createUserWithEmail: failure", task.getException());
                             Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -115,10 +157,9 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-        guardarUsuarios();
     }
-    private void guardarUsuarios() {
+
+    private void saveUser() {
         String name = userName.getText().toString();
         String email = this.email.getText().toString();
         String password = this.password.getText().toString();
@@ -133,9 +174,8 @@ public class RegisterActivity extends AppCompatActivity {
         Map<String, Object> usuario = new HashMap<>();
         usuario.put("nombre", name);
         usuario.put("email", email);
-        usuario.put("password", password);
         usuario.put("score", 0);
-        usuario.put("photoURL", "https://firebasestorage.googleapis.com/v0/b/entriviados-aa084.appspot.com/o/Image%2Fprofile.png?alt=media&token=e58e55f7-7b33-47c7-bdae-875fde968424");
+        usuario.put("photoURL", "https://firebasestorage.googleapis.com/v0/b/entriviados-aa084.appspot.com/o/Image%2Fprofile.png?alt=media&token=38c0c024-ebb4-4019-832f-2329f56ac4fc");
 
         usuariosRef.add(usuario)
                 .addOnSuccessListener(documentReference -> {

@@ -59,12 +59,11 @@ public class RankingActivity extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String imageURL = document.getString("photoURL");
                             String name = document.getString("nombre");
-                            String password = "";
                             Long score = document.getLong("score");
 
                             //Check if any of the required values are null before adding to the list
                             if ((imageURL != null && name != null && score != null) && (score != 0)) {
-                                userList.add(new User(name, password, imageURL,score));
+                                userList.add(new User(name, imageURL,score));
                             }
                         }
                         UserAdapter adapter = new UserAdapter(userList, this, registeredUserName);
