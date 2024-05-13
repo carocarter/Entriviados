@@ -1,5 +1,51 @@
 <resources>
-    <string name="app_name">Entriviados</string>
+    <string name="app_name" translatable="false">Entriviados</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="forgoten_password">Forgot your password?</string>
+    <string name="sing_in">Sing in</string>
+    <string name="sing_up">Sing in</string>
+
+    <string name="user_name">Username</string>
+    <string name="acept_terms">Acept terms and conditions</string>
+    <string name="save_changes">Save changes</string>
+    <string name="reset_password">Reset my password</string>
+    <string name="score">Score</string>
+    <string name="total_score">Total score</string>
+    <string name="register">Register</string>
+    <string name="profile">Profile</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="play_again">Play again</string>
+    <string name="change_pic">Change pic</string>
+    <string name="delete_account">Delete account</string>
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+    <string name="empty">"Invalid email or password"</string>
+    <string name="auth_failed">Incorrect username or password</string>
+    <string name="erro_ocurred">An error occurred: </string>
+
+    <string-array name="register_errors">
+        <item>Email not valid</item>
+        <item>Password must have at least 6 characters</item>
+        <item>Password mismatch</item>
+    </string-array>
+
+    <string-array name="settings_messages">
+        <item>No user data</item>
+        <item>Error retrieving data</item>
+        <item>Changes saved successfully</item>
+        <item>Failed to save changes</item>
+        <item>Password updated successfully</item>
+        <item>Failed to update password</item>
+        <item>Image uploaded successfully</item>
+        <item>Failed to update profile image</item>
+        <item>Failed to upload image</item>
+        <item>Account deleted</item>
+        <item>Error deleting account</item>
+    </string-array>
+
     <string-array name="screens">
         <item>Perfil</item>
         <item>Mensajes</item>

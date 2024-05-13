@@ -36,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
     CheckBox checkBox;
     Button singUp;
 
+    String[] errorMessage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
         repeatPassword = findViewById(R.id.repassword);
         checkBox = findViewById(R.id.checkBox);
         singUp = findViewById(R.id.register);
+        errorMessage = getResources().getStringArray(R.array.register_errors);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -87,11 +89,11 @@ public class RegisterActivity extends AppCompatActivity {
     private void createAccount(String email, String password) {
 
         if (!isValidEmail(email)) {
-            Toast.makeText(this, "Email not valid", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, errorMessage[0], Toast.LENGTH_SHORT).show();
             return;
         }
         if (!isValidPassword(password)) {
-            Toast.makeText(this, "Password must have at least 6 characters", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, errorMessage[1], Toast.LENGTH_SHORT).show();
             return;
         }
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -123,7 +125,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         String repetirContraseña = repeatPassword.getText().toString();
         if (!password.equals(repetirContraseña)) {
-            Toast.makeText(this, "Password mismatch", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, errorMessage[2], Toast.LENGTH_SHORT).show();
             return;
         }
         CollectionReference usuariosRef = db.collection("usuarios");

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="email">Adresse électronique</string>
+    <string name="password">Mot de passe</string>
+    <string name="forgoten_password">Mot de passe oublié?</string>
+    <string name="repeat_password">Répéter le mot de passe</string>
+    <string name="sing_in">Se connecter</string>
+    <string name="sing_up">Inscription</string>
+    <string name="user_name">Nom d\'utilisateur</string>
+    <string name="acept_terms">Accepter les termes et conditions</string>
+    <string name="save_changes">Sauvegarder les modifications</string>
+    <string name="reset_password">Réinitialiser le mot de passe</string>
+    <string name="score">Score</string>
+    <string name="total_score">Score total</string>
+    <string name="register">Inscription</string>
+    <string name="profile">Profil</string>
+    <string name="edit_profile">Modifier le profil</string>
+    <string name="play_again">Rejouer</string>
+    <string name="change_pic">Changer l\'image</string>
+    <string name="delete_account">Supprimer le compte</string>
+    <string name="easy">Facile</string>
+    <string name="medium">Moyen</string>
+    <string name="hard">Difficile</string>
+    <string name="empty">"L'adresse e-mail ou le mot de passe est vide"</string>
+    <string name="auth_failed">Échec de l\'authentification</string>
+    <string name="erro_ocurred">Une erreur s\'est produite: </string>
+
+    <string-array name="register_errors">
+        <item>L\'adresse e-mail n\'est pas valide</item>
+        <item>Le mot de passe doit avoir au moins 6 caractères</item>
+        <item>Les mots de passe ne correspondent pas</item>
+    </string-array>
+
+    <string-array name="settings_messages">
+        <item>Aucune donnée utilisateur</item>
+        <item>Erreur lors de la récupération des données</item>
+        <item>Changements enregistrés avec succès</item>
+        <item>Échec de l\'enregistrement des modifications</item>
+        <item>Mot de passe mis à jour avec succès</item>
+        <item>Échec de la mise à jour du mot de passe</item>
+        <item>Image téléchargée avec succès</item>
+        <item>Échec de la mise à jour de l\'image de profil</item>
+        <item>Échec du téléchargement de l\'image</item>
+        <item>Compte supprimé</item>
+        <item>Erreur lors de la suppression du compte</item>
+    </string-array>
+
+</resources>

@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     private void signIn(String email, String password) {
 
         if ( email.isEmpty() ||  password.isEmpty()) {
-            Toast.makeText(MainActivity.this, "Email or password is empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, getResources().getString(R.string.empty), Toast.LENGTH_SHORT).show();
             return;
         }
         mAuth.signInWithEmailAndPassword(email, password)
@@ -110,12 +110,12 @@ public class MainActivity extends AppCompatActivity {
                             finish();
                         } else {
                             // Si falla el inicio de sesión, mostrar un mensaje de error
-                            Toast.makeText(MainActivity.this, "Authentication failed",
+                            Toast.makeText(MainActivity.this, getResources().getString(R.string.auth_failed),
                                     Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         // Manejar cualquier excepción que pueda ocurrir durante el inicio de sesión
-                        Toast.makeText(MainActivity.this, "An error occurred: " + e.getMessage(),
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.erro_ocurred) + e.getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     }
                 });

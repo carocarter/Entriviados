@@ -37,7 +37,7 @@
                 android:layout_marginTop="20dp"
                 android:padding="8dp"
                 android:ems="10"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:drawableLeft="@drawable/ic_mail"
                 android:drawablePadding="8dp"
                 android:inputType="textEmailAddress"
@@ -52,7 +52,7 @@
                 android:layout_marginTop="20dp"
                 android:padding="8dp"
                 android:textColor="@color/white"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:drawableLeft="@drawable/ic_lock"
                 android:drawablePadding="8dp"
                 android:backgroundTint="@color/white"
@@ -64,13 +64,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="Password forgotten"
+                android:text="@string/forgoten_password"
                 android:textColor="@color/white"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="Sign in"
+                android:text="@string/sing_in"
                 android:id="@+id/button"
                 android:textSize="18sp"
                 android:layout_marginTop="50dp"
@@ -90,7 +90,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="Sign up"
+                android:text="@string/sing_up"
                 android:id="@+id/button2"
                 android:textSize="18sp"
                 android:layout_marginTop="10dp"

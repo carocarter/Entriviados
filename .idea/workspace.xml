@@ -35,7 +35,17 @@
           <theme>@style/Theme.Entriviados10</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_score.xml">
+        <config>
+          <theme>@style/Theme.Entriviados10</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_settings.xml">
+        <config>
+          <theme>@style/Theme.Entriviados10</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/level_select.xml">
         <config>
           <theme>@style/Theme.Entriviados10</theme>
         </config>
@@ -57,8 +67,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3e69f788-ed52-4987-ab35-215192f32f85" name="Changes" comment="SettingsActivityActivity funcionando">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/ProfileActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/ProfileActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/RegisterActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/RegisterActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/SettingsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/SettingsActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_forgot_password.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_forgot_password.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_game.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_game.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_profile.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_register.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_register.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_score.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_score.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/level_select.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/level_select.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +90,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\Usuario\.android\avd\Medium_Phone_API_TiramisuPrivacySandbox.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\usuario\.android\avd\Pixel_6a_API_33.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$/Entriviados10">
       <ProjectState />
@@ -96,9 +118,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
-        <option value="valueResourceFile" />
         <option value="layoutResourceFile" />
         <option value="layoutResourceFile_vertical" />
+        <option value="valueResourceFile" />
       </list>
     </option>
   </component>

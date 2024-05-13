@@ -51,6 +51,8 @@ public class SettingsActivity extends AppCompatActivity {
     private String myUri = "";
     private StorageTask uploadTask;
 
+    String[] settingsMessages;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +73,8 @@ public class SettingsActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         storageReference = FirebaseStorage.getInstance().getReference("Image");
         userEmail = user.getEmail();
+        settingsMessages = getResources().getStringArray(R.array.settings_messages);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
@@ -129,14 +133,14 @@ public class SettingsActivity extends AppCompatActivity {
                                             .into(editImage);
                                 }
                             } else {
-                                Toast.makeText(SettingsActivity.this, "No user data", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SettingsActivity.this, settingsMessages[0], Toast.LENGTH_SHORT).show();
                             }
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(SettingsActivity.this, "Error retrieving data", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SettingsActivity.this, settingsMessages[1], Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -155,13 +159,13 @@ public class SettingsActivity extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(SettingsActivity.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SettingsActivity.this, settingsMessages[2], Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(SettingsActivity.this, "Failed to save changes", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SettingsActivity.this, settingsMessages[3], Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -170,13 +174,13 @@ public class SettingsActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Toast.makeText(SettingsActivity.this, "Password updated successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SettingsActivity.this, settingsMessages[4], Toast.LENGTH_SHORT).show();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(SettingsActivity.this, "Failed to update password", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SettingsActivity.this, settingsMessages[5], Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -221,19 +225,19 @@ public class SettingsActivity extends AppCompatActivity {
                                             .addOnSuccessListener(aVoid -> {
                                                 // Update profile image in the UI using Glide
                                                 Glide.with(this).load(myUri).into(editImage);
-                                                Toast.makeText(SettingsActivity.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(SettingsActivity.this, settingsMessages[6], Toast.LENGTH_SHORT).show();
                                             })
                                             .addOnFailureListener(e -> {
-                                                Toast.makeText(SettingsActivity.this, "Failed to update profile image", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(SettingsActivity.this, settingsMessages[7], Toast.LENGTH_SHORT).show();
                                             });
                                 }
                             } else {
-                                Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, settingsMessages[8], Toast.LENGTH_SHORT).show();
                             }
                         });
             } else {
                 // Handle upload failure
-                Toast.makeText(SettingsActivity.this, "Failed to upload image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingsActivity.this, settingsMessages[8], Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -282,14 +286,14 @@ public class SettingsActivity extends AppCompatActivity {
             user.delete().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     // La cuenta se ha eliminado exitosamente.
-                    Toast.makeText(SettingsActivity.this, "Account deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, settingsMessages[9], Toast.LENGTH_SHORT).show();
                     // Redirige al usuario a la pantalla de inicio de sesión
                     Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish(); // Termina la actividad actual
                 } else {
                     // Ocurrió un error al intentar eliminar la cuenta
-                    Toast.makeText(SettingsActivity.this, "Error deleting account", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, settingsMessages[10], Toast.LENGTH_SHORT).show();
                 }
             });
         }

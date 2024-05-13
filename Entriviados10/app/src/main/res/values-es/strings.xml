@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="forgoten_password">¿Olvidó su contraseña?</string>
+    <string name="repeat_password">Repetir contraseña</string>
+    <string name="sing_in">Iniciar sesion</string>
+    <string name="sing_up">Registro</string>
+    <string name="user_name">Nombre de usuario</string>
+    <string name="acept_terms">Aceptar términos y condiciones</string>
+    <string name="save_changes">Guardar cambios</string>
+    <string name="reset_password">Reestablecer contraseña</string>
+    <string name="score">Puntuación</string>
+    <string name="total_score">Puntuación total</string>
+    <string name="register">Registro</string>
+    <string name="profile">Perfil</string>
+    <string name="edit_profile">Editar perfil</string>
+    <string name="play_again">Jugar de nuevo</string>
+    <string name="change_pic">Cambiar imagen</string>
+    <string name="delete_account">Borrar cuenta</string>
+    <string name="easy">Facil</string>
+    <string name="medium">Normal</string>
+    <string name="hard">Dificil</string>
+    <string name="empty">"El correo electrónico o la contraseña están vacíos"</string>
+    <string name="auth_failed">Usuario o contraseña incorrectos</string>
+    <string name="erro_ocurred">Se produjo un error: </string>
+
+    <string-array name="register_errors">
+        <item>Correo electrónico no válido</item>
+        <item>La contraseña debe tener al menos 6 caracteres</item>
+        <item>La contraseña no coincide</item>
+    </string-array>
+
+    <string-array name="settings_messages">
+        <item>No hay datos de usuario</item>
+        <item>Error al recuperar los datos</item>
+        <item>Cambios guardados correctamente</item>
+        <item>Error al guardar cambios</item>
+        <item>Contraseña actualizada correctamente</item>
+        <item>Error al actualizar la contraseña</item>
+        <item>Imagen subida correctamente</item>
+        <item>Error al actualizar la imagen de perfil</item>
+        <item>Error al subir la imagen</item>
+        <item>Cuenta eliminada</item>
+        <item>Error al eliminar la cuenta</item>
+    </string-array>
+
+</resources>
