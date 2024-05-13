@@ -42,6 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     final private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private FirebaseUser user;
     private StorageReference storageReference;
     private ActivityResultLauncher<String> pickImageLauncher;
     private String userEmail;
@@ -68,7 +69,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         storageReference = FirebaseStorage.getInstance().getReference("Image");
         userEmail = user.getEmail();
         settingsMessages = getResources().getStringArray(R.array.settings_messages);
@@ -107,7 +108,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void getUserInfo() {
-        FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             String userEmail = user.getEmail();
             firebaseFirestore.collection("usuarios").whereEqualTo("email", userEmail).get()
@@ -146,7 +146,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void saveChanges() {
         //Set new values for data info
-        FirebaseUser user = mAuth.getCurrentUser();
+
         if (user != null) {
             String newUsername = editUsername.getText().toString();
             String newPassword = editPassword.getText().toString();
@@ -202,10 +202,6 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    private void uploadProfileImage(Uri imageUri) {
-        Glide.with(this).load(imageUri).into(editImage);
-    }
-
     private void uploadImageToFirebase(Uri imageURL) {
         //Upload the image to Firebase Storage
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -251,7 +247,6 @@ public class SettingsActivity extends AppCompatActivity {
                             }
                         });
             } else {
-                // Handle upload failure
                 Toast.makeText(SettingsActivity.this, settingsMessages[8], Toast.LENGTH_SHORT).show();
             }
         });
@@ -276,9 +271,8 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void deleteAccount() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        // Delete the user document from Firestore
         if (user != null) {
-            //Delete user document from Firebase
             db.collection("usuarios")
                     .whereEqualTo("email", userEmail)
                     .get()
@@ -290,20 +284,20 @@ public class SettingsActivity extends AppCompatActivity {
                         }
                     });
 
-            user.delete().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    // La cuenta se ha eliminado exitosamente.
-                    Toast.makeText(SettingsActivity.this, settingsMessages[9], Toast.LENGTH_SHORT).show();
-                    // Redirige al usuario a la pantalla de inicio de sesión
-                    Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish(); // Termina la actividad actual
-                } else {
-                    // Ocurrió un error al intentar eliminar la cuenta
-                    Toast.makeText(SettingsActivity.this, settingsMessages[10], Toast.LENGTH_SHORT).show();
-                }
-            });
+            // Delete the user account
+            user.delete()
+                    .addOnSuccessListener(task -> {
+                        // Account deleted successfully, show success message
+                        Toast.makeText(SettingsActivity.this, settingsMessages[9], Toast.LENGTH_SHORT).show();
+                        // Redirect the user to the login screen
+                        Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish(); // Finish the current activity
+                    })
+                    .addOnFailureListener(e -> {
+                        // Failed to delete account, show error message
+                        Toast.makeText(SettingsActivity.this, settingsMessages[10], Toast.LENGTH_SHORT).show();
+                    });
         }
     }
-
 }
