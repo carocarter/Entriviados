@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/profileScore"
-                    android:text="@string/total_score"
+                    android:text="Total score"
                     android:layout_weight="1"
                     android:layout_gravity="center"
                     android:textAlignment="center"
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/score"
                     android:layout_weight="1"
-                    android:text="Total Score"
+                    android:text="@string/total_score"
                     android:textStyle="bold"
                     android:textColor="@color/emphasise"
                     android:textSize="18sp"/>

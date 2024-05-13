@@ -130,7 +130,7 @@ public class SelectLevelActivity extends AppCompatActivity implements AdapterVie
         if (totalScore > 0) {
             totalScoreView.setVisibility(View.VISIBLE);
             scoreSquare.setVisibility(View.VISIBLE);
-            totalScoreView.setText("Total score:\n" + totalScore);
+            totalScoreView.setText(getResources().getString(R.string.total_score)+ ":\n" + totalScore);
         } else {
             totalScoreView.setVisibility(View.GONE);
             scoreSquare.setVisibility(View.GONE);
