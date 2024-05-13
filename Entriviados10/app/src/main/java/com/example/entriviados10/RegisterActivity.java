@@ -103,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         if (!task.getResult().isEmpty()) {
                             // Email already exists, show error message
-                            Toast.makeText(this, "Email already exists", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, R.string.email_already_exists, Toast.LENGTH_SHORT).show();
                         } else {
                             //Email does not exist, check if username exists
                             checkUsernameExists(email, password);
@@ -125,7 +125,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         if (!task.getResult().isEmpty()) {
                             // Username already exists, show error message
-                            Toast.makeText(this, "Username already exists", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, R.string.username_already_exists, Toast.LENGTH_SHORT).show();
                         } else {
                             // Username does not exist, proceed with registration
                             registerUser(email, password);

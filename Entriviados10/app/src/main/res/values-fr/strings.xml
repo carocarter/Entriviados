@@ -44,5 +44,7 @@
         <item>Compte supprimé</item>
         <item>Erreur lors de la suppression du compte</item>
     </string-array>
+    <string name="email_already_exists">L\'adresse e-mail existe déjà</string>
+    <string name="username_already_exists">L\'utilisateur existe déjà</string>
 
 </resources>

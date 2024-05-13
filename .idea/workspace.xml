@@ -67,12 +67,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3e69f788-ed52-4987-ab35-215192f32f85" name="Changes" comment="Strings idiomas">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/RankingActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/RankingActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/UserAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/UserAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/user_item_ranking.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/user_item_ranking.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/RegisterActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/RegisterActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values-es/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values-es/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +81,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\Usuario\.android\avd\Medium_Phone_API_TiramisuPrivacySandbox.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\User\.android\avd\Pixel_7_Pro_API_31.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$/Entriviados10">
       <ProjectState />
@@ -131,25 +130,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "com.google.services.firebase.aqiPopupShown": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Usuario/Documents/FP/Entriviados",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.2",
-    "settings.build.tools.auto.reload": "ALL",
-    "settings.editor.selected.configurable": "AndroidSdkUpdater",
-    "two.files.diff.last.used.folder": "C:/Users/Usuario/Documents/FP/Entriviados"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/usuario/Desktop&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.build.tools.auto.reload&quot;: &quot;ALL&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;AndroidSdkUpdater&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.example.entriviados10" />

@@ -44,5 +44,7 @@
         <item>Cuenta eliminada</item>
         <item>Error al eliminar la cuenta</item>
     </string-array>
+    <string name="email_already_exists">El correo electrónico ya existe</string>
+    <string name="username_already_exists">El usuario ya existe</string>
 
 </resources>

@@ -25,6 +25,8 @@
     <string name="empty">"Invalid email or password"</string>
     <string name="auth_failed">Incorrect username or password</string>
     <string name="erro_ocurred">An error occurred: </string>
+    <string name="email_already_exists">Email already exists</string>
+    <string name="username_already_exists">Username already exists</string>
 
     <string-array name="register_errors">
         <item>Email not valid</item>
