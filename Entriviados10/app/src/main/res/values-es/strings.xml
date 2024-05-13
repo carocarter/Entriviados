@@ -4,7 +4,7 @@
     <string name="password">Contraseña</string>
     <string name="forgoten_password">¿Olvidó su contraseña?</string>
     <string name="repeat_password">Repetir contraseña</string>
-    <string name="sing_in">Iniciar sesion</string>
+    <string name="sing_in">Iniciar sesión</string>
     <string name="sing_up">Registro</string>
     <string name="user_name">Nombre de usuario</string>
     <string name="acept_terms">Aceptar términos y condiciones</string>
@@ -18,9 +18,9 @@
     <string name="play_again">Jugar de nuevo</string>
     <string name="change_pic">Cambiar imagen</string>
     <string name="delete_account">Borrar cuenta</string>
-    <string name="easy">Facil</string>
-    <string name="medium">Normal</string>
-    <string name="hard">Dificil</string>
+    <string name="easy">FÁCIL</string>
+    <string name="medium">NORMAL</string>
+    <string name="hard">DIFÍCIL</string>
     <string name="empty">"El correo electrónico o la contraseña están vacíos"</string>
     <string name="auth_failed">Usuario o contraseña incorrectos</string>
     <string name="erro_ocurred">Se produjo un error: </string>

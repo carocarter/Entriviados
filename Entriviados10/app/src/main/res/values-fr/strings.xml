@@ -18,9 +18,9 @@
     <string name="play_again">Rejouer</string>
     <string name="change_pic">Changer l\'image</string>
     <string name="delete_account">Supprimer le compte</string>
-    <string name="easy">Facile</string>
-    <string name="medium">Moyen</string>
-    <string name="hard">Difficile</string>
+    <string name="easy">FACILE</string>
+    <string name="medium">MOYEN</string>
+    <string name="hard">DIFFICILE</string>
     <string name="empty">"L'adresse e-mail ou le mot de passe est vide"</string>
     <string name="auth_failed">Échec de l\'authentification</string>
     <string name="erro_ocurred">Une erreur s\'est produite: </string>

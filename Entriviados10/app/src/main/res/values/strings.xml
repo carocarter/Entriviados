@@ -5,7 +5,7 @@
     <string name="repeat_password">Repeat password</string>
     <string name="forgoten_password">Forgot your password?</string>
     <string name="sing_in">Sing in</string>
-    <string name="sing_up">Sing in</string>
+    <string name="sing_up">Sing up</string>
 
     <string name="user_name">Username</string>
     <string name="acept_terms">Acept terms and conditions</string>
@@ -19,9 +19,9 @@
     <string name="play_again">Play again</string>
     <string name="change_pic">Change pic</string>
     <string name="delete_account">Delete account</string>
-    <string name="easy">Easy</string>
-    <string name="medium">Medium</string>
-    <string name="hard">Hard</string>
+    <string name="easy">EASY</string>
+    <string name="medium">MEDIUM</string>
+    <string name="hard">HARD</string>
     <string name="empty">"Invalid email or password"</string>
     <string name="auth_failed">Incorrect username or password</string>
     <string name="erro_ocurred">An error occurred: </string>
