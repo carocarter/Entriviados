@@ -69,9 +69,6 @@
     <list default="true" id="3e69f788-ed52-4987-ab35-215192f32f85" name="Changes" comment="Strings idiomas">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/SettingsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/java/com/example/entriviados10/SettingsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values-es/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values-es/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values-fr/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values-fr/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +78,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\User\.android\avd\Pixel_7_Pro_API_31.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\Usuario\.android\avd\Medium_Phone_API_TiramisuPrivacySandbox.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$/Entriviados10">
       <ProjectState />

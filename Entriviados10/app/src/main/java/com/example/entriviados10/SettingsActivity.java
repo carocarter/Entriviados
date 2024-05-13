@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -45,7 +44,6 @@ public class SettingsActivity extends AppCompatActivity {
     final private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private StorageReference storageReference;
     private ActivityResultLauncher<String> pickImageLauncher;
-    private ImageButton imageLogout;
     private String userEmail;
     private Uri imageURL;
     private String myUri = "";
@@ -66,7 +64,7 @@ public class SettingsActivity extends AppCompatActivity {
         editPassword = findViewById(R.id.editPassword);
         saveButton = findViewById(R.id.saveButton);
         deleteButton = findViewById(R.id.deleteButton);
-        imageLogout = findViewById(R.id.imagelogout);
+        ImageButton imageLogout = findViewById(R.id.imagelogout);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -150,24 +148,41 @@ public class SettingsActivity extends AppCompatActivity {
         //Set new values for data info
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            String userEmail = user.getEmail();
             String newUsername = editUsername.getText().toString();
             String newPassword = editPassword.getText().toString();
 
-            firebaseFirestore.collection("usuarios").document(userEmail)
-                    .update("nombre", newUsername)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast.makeText(SettingsActivity.this, settingsMessages[2], Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(SettingsActivity.this, settingsMessages[3], Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            if (!newUsername.isEmpty()) {
+                firebaseFirestore.collection("usuarios")
+                        .whereEqualTo("nombre", newUsername)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                if (!task.getResult().isEmpty()) {
+                                    // Username already exists, show error message
+                                    Toast.makeText(this, R.string.username_already_exists, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Username does not exist, update username
+                                    firebaseFirestore.collection("usuarios").whereEqualTo("email", userEmail)
+                                            .get()
+                                            .addOnCompleteListener(newtask -> {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : newtask.getResult()) {
+                                                        firebaseFirestore.collection("usuarios").document(document.getId())
+                                                                .update("nombre", newUsername)
+                                                                .addOnSuccessListener(unused -> Toast.makeText(SettingsActivity.this, settingsMessages[2], Toast.LENGTH_SHORT).show())
+                                                                .addOnFailureListener(e -> Toast.makeText(SettingsActivity.this, settingsMessages[3], Toast.LENGTH_SHORT).show());
+                                                    }
+                                                } else {
+                                                    Toast.makeText(SettingsActivity.this, settingsMessages[3], Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                            } else {
+                                // Error occurred while checking username existence
+                                Toast.makeText(this, "Server error", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
 
             if (!newPassword.isEmpty()) {
                 user.updatePassword(newPassword)
