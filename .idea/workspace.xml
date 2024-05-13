@@ -35,7 +35,17 @@
           <theme>@style/Theme.Entriviados10</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_score.xml">
+        <config>
+          <theme>@style/Theme.Entriviados10</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_settings.xml">
+        <config>
+          <theme>@style/Theme.Entriviados10</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/level_select.xml">
         <config>
           <theme>@style/Theme.Entriviados10</theme>
         </config>
@@ -56,11 +66,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3e69f788-ed52-4987-ab35-215192f32f85" name="Changes" comment="SettingsActivityActivity funcionando">
+    <list default="true" id="3e69f788-ed52-4987-ab35-215192f32f85" name="Changes" comment="Strings idiomas">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values-es/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values-es/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values-fr/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values-fr/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Entriviados10/app/src/main/res/layout/activity_profile.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +78,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\User\.android\avd\Pixel_6_Pro_API_34.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\usuario\.android\avd\Pixel_6a_API_33.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$/Entriviados10">
       <ProjectState />
@@ -98,9 +106,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
-        <option value="valueResourceFile" />
         <option value="layoutResourceFile" />
         <option value="layoutResourceFile_vertical" />
+        <option value="valueResourceFile" />
       </list>
     </option>
   </component>
@@ -129,7 +137,7 @@
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Usuario/Documents/FP/Entriviados&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/usuario/Desktop&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -431,7 +439,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715455617607</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Strings idiomas">
+      <option name="closed" value="true" />
+      <created>1715614857665</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1715614857665</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -449,6 +465,7 @@
     <MESSAGE value="nuevas actualizaciones" />
     <MESSAGE value="ProfileActivity funcionando" />
     <MESSAGE value="SettingsActivityActivity funcionando" />
-    <option name="LAST_COMMIT_MESSAGE" value="SettingsActivityActivity funcionando" />
+    <MESSAGE value="Strings idiomas" />
+    <option name="LAST_COMMIT_MESSAGE" value="Strings idiomas" />
   </component>
 </project>
