@@ -55,4 +55,8 @@
         <item>Web</item>
         <item>Cerrar sesión</item>
     </string-array>
+    <string name="are_you_sure_this_action_can_not_be_undone">Are you sure? This action can not be undone</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="uploading_image">Uploading image...</string>
 </resources>

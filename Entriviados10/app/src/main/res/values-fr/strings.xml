@@ -46,5 +46,9 @@
     </string-array>
     <string name="email_already_exists">L\'adresse e-mail existe déjà</string>
     <string name="username_already_exists">L\'utilisateur existe déjà</string>
+    <string name="are_you_sure_this_action_can_not_be_undone">Êtes-vous sûr ? Cette action ne peut pas être annulée.</string>
+    <string name="yes">Oui</string>
+    <string name="cancel">Annuler</string>
+    <string name="uploading_image">Chargement de l\'image...</string>
 
 </resources>
