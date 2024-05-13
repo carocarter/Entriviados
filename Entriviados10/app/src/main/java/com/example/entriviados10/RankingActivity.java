@@ -1,10 +1,7 @@
 package com.example.entriviados10;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,7 +18,8 @@ import java.util.List;
 public class RankingActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private androidx.appcompat.widget.Toolbar toolbar;
-    private Button goBackButton;
+    private String registeredUserName;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,20 +30,26 @@ public class RankingActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle(null);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         //Initialize RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         //Retrieve user data
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        String userEmail = mAuth.getCurrentUser().getEmail();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("usuarios")
+                .whereEqualTo("email", userEmail)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            registeredUserName = document.getString("nombre"); // Get the registered user's name
+                        }
+                    }
+                });
         db.collection("usuarios")
                 .orderBy("score", Query.Direction.DESCENDING)
                 .get()
@@ -56,14 +60,14 @@ public class RankingActivity extends AppCompatActivity {
                             String imageURL = document.getString("photoURL");
                             String name = document.getString("nombre");
                             String password = "";
-                            Integer score = document.getLong("score") != null ? document.getLong("score").intValue() : null;
+                            Long score = document.getLong("score");
 
                             //Check if any of the required values are null before adding to the list
-                            if (imageURL != null && name != null && score != null) {
-                                userList.add(new User(imageURL, name, password, score));
+                            if ((imageURL != null && name != null && score != null) && (score != 0)) {
+                                userList.add(new User(name, password, imageURL,score));
                             }
                         }
-                        UserAdapter adapter = new UserAdapter(userList, this);
+                        UserAdapter adapter = new UserAdapter(userList, this, registeredUserName);
                         recyclerView.setAdapter(adapter);
                     } else {
                         Toast.makeText(this, "Error loading ranking", Toast.LENGTH_SHORT).show();

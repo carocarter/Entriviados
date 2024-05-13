@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
@@ -15,12 +16,14 @@ import java.util.List;
 
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
-    private Context context;
-    private List<com.example.entriviados10.User> userList;
+    private final Context context;
+    private final List<com.example.entriviados10.User> userList;
+    private final String registeredUserName;
 
-    public UserAdapter(List<com.example.entriviados10.User> userList, Context context) {
+    public UserAdapter(List<com.example.entriviados10.User> userList, Context context, String registeredUserName) {
         this.userList = userList;
         this.context = context;
+        this.registeredUserName = registeredUserName;
     }
 
     @NonNull
@@ -34,9 +37,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = userList.get(position);
 
-        Glide.with(context).load(user.getImageURL()).into(holder.userPicture);
+        holder.order.setText(String.valueOf(position + 1));
+        Glide.with(context)
+                .load(user.getImageURL())
+                .into(holder.userPicture);
+
         holder.userName.setText(user.getName());
         holder.userScore.setText(String.valueOf(user.getScore()));
+        if (user.getName().equals(registeredUserName)) {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.primary));
+        }
     }
 
     @Override
@@ -45,15 +55,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {
+        public QuestionDetails rankingOrder;
         ImageView userPicture;
-        TextView userName, userScore;
+        TextView userName, userScore, order;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
+            order = itemView.findViewById(R.id.rankingOrder);
             userPicture = itemView.findViewById(R.id.userPicture);
             userName = itemView.findViewById(R.id.userName);
             userScore = itemView.findViewById(R.id.userScore);
         }
     }
 }
-

@@ -1,9 +1,9 @@
 package com.example.entriviados10;
 public class User {
     private String name, password, imageURL;
-    private int score;
+    private long score;
 
-    public User(String name, String password, String imageURL, int score) {
+    public User(String name, String password, String imageURL, long score) {
         this.imageURL = imageURL;
         this.name = name;
         this.password = password;
@@ -34,11 +34,11 @@ public class User {
         this.imageURL = imageURL;
     }
 
-    public int getScore() {
+    public long getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(long score) {
         this.score = score;
     }
 }

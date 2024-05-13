@@ -1,29 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    >
 
-    <!-- User Picture -->
-    <com.mikhaellopez.circularimageview.CircularImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/userPicture"
-        android:src="@drawable/ic_person"
-        android:layout_gravity="center"/>
-
-    <!-- User Name -->
-    <TextView
-        android:id="@+id/userName"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="User Name" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
 
-    <!-- User Score -->
-    <TextView
-        android:id="@+id/userScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Score" />
+        <TextView
+            android:id="@+id/rankingOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="8dp"/>
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/userPicture"
+            android:src="@drawable/ic_person"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:civ_border_width="0dp"/>
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="User Name"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:id="@+id/userScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score"
+            android:textColor="@color/white"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="20dp"
+            android:textSize="18sp"/>
+    </LinearLayout>
 
 </LinearLayout>
