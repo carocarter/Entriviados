@@ -79,11 +79,11 @@ public class ProfileActivity extends AppCompatActivity {
         username = intent.getStringExtra("nombre");
         email = intent.getStringExtra("email");
         score = intent.getIntExtra("score", 0);
-        titleUsername.setText("nombre");
+        titleUsername.setText(R.string.name);
         //profileImg.setImageURI(Uri.parse("photoURL"));
-        profileScore.setText("score");
-        profileEmail.setText("email");
-        profileUsername.setText("nombre");
+        profileScore.setText(R.string.score);
+        profileEmail.setText(R.string.email);
+        profileUsername.setText(R.string.name);
 
         //Shows user settings
         editProfile.setOnClickListener(new View.OnClickListener() {
