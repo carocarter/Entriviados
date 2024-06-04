@@ -3,16 +3,22 @@ package com.example.entriviados10;
 import static android.content.ContentValues.TAG;
 
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -35,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText userName, email, password, repeatPassword;
     CheckBox checkBox;
     Button singUp;
+    TextView textViewTerms;
 
     String[] errorMessage;
 
@@ -52,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         repeatPassword = findViewById(R.id.repassword);
         checkBox = findViewById(R.id.checkBox);
         singUp = findViewById(R.id.register);
+        textViewTerms = findViewById(R.id.textViewTerms);
         errorMessage = getResources().getStringArray(R.array.register_errors);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -63,6 +71,25 @@ public class RegisterActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        String termsText = getString(R.string.terms_and_conditions);
+        SpannableString spannableString = new SpannableString(termsText);
+
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                showTermsAndConditions();
+            }
+        };
+
+        int start = 0;
+        int end = start + getString(R.string.terms_and_conditions).length();
+        spannableString.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        textViewTerms.setText(spannableString);
+        textViewTerms.setMovementMethod(LinkMovementMethod.getInstance());
+        singUp.setEnabled(false);
+        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> singUp.setEnabled(isChecked));
 
         singUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,14 +213,20 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
     private boolean isValidEmail(String email) {
-        // Utiliza una expresión regular para verificar el formato del correo electrónico
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         return email.matches(emailPattern);
     }
 
     private boolean isValidPassword(String password) {
-        // Comprueba si la longitud de la contraseña es al menos 6 caracteres
         return password.length() >= 6;
+    }
+
+    private void showTermsAndConditions() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.terms_and_conditions);
+        builder.setMessage(getString(R.string.terms_and_conditions_text));
+        builder.setPositiveButton(android.R.string.ok, null);
+        builder.show();
     }
 }
 
